@@ -69,9 +69,11 @@ public:
         mSize = 1;
     }
 
-    ~Map(){
-        KeySet* keySetPointer; 
-        while(base){
+    ~Map()
+    {
+        KeySet *keySetPointer;
+        while (base)
+        {
             keySetPointer = base->nextKeySet;
             delete base;
             base = keySetPointer;
@@ -87,16 +89,16 @@ public:
         }
         else
         {
-            KeySet *keySetPointer = base,
+            KeySet* keySetPointer = base,
                    *newKeySet = new KeySet(key, value);
             // TODO: refactor optimise
-            while (keySetPointer->nextKeySet && (newKeySet->mKey != keySetPointer->mKey))
+            while (keySetPointer->nextKeySet && (key != keySetPointer->mKey))
             {
                 keySetPointer = keySetPointer->nextKeySet;
             }
 
             // newKeySet->nextKeySet = keySetPointer->nextKeySet;
-            if (newKeySet->mKey == keySetPointer->mKey)
+            if (key == keySetPointer->mKey)
             {
                 keySetPointer->mValue = value;
             }
@@ -225,6 +227,7 @@ public:
  */
 int main()
 {
+
     Map<int, char> newMap(1, 'a');
 
     newMap.put(2, 'b');
@@ -305,19 +308,31 @@ int main()
     emptyMap.remove(2);
     emptyMap.display();
 
-
     return 0;
+
+    // int firstNumber = 1;
+    // int* secondNumber = &firstNumber;
+
+    // void* notApointer = &firstNumber;
+
+    // cout << notApointer;
     /*
-    int firstNumber = 1;
-    int secondNumber = firstNumber;
+        cout << secondNumber << endl;
+
+        (*secondNumber)++;
+
+        cout << *secondNumber << endl;
+        */
+
+    /*
 
 
-    cout << secondNumber;
+        cout << *secondNumber << endl;
 
 
-    secondNumber++;
-    cout << secondNumber;
-    cout << firstNumber;
-    */
-   
+        (*secondNumber)++;
+        cout << *secondNumber << endl;
+        */
+
+    // cout << firstNumber;
 }
