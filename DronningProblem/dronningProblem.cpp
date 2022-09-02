@@ -23,12 +23,13 @@ int amountOfSolutions = 0;
  */
 void miniMax(vector<int> takenHorizontals, vector<DiagonalLine> takenDiagonals, int depth)
 {
-    //TODO: modify to take in range like thingy, so that you dont have to change the numbers for other n*n chess boards
+    // TODO: modify to take in range like thingy, so that you dont have to change the numbers for other n*n chess boards
+    // set<int> availablePositions = {1, 2, 3, 4, 5, 6, 7, 8,9,10,11,12,13};
     set<int> availablePositions = {1, 2, 3, 4, 5, 6, 7, 8};
-    //set<int> availablePositions = {1, 2, 3, 4};
+    // set<int> availablePositions = {1, 2, 3, 4};
 
     int endDepth = 8;
-    //int endDepth = 4;
+    // int endDepth = 4;
 
     for (int i : takenHorizontals)
     {
@@ -58,7 +59,7 @@ void miniMax(vector<int> takenHorizontals, vector<DiagonalLine> takenDiagonals, 
             mTakenHorizontals.push_back(i);
             mTakenDiagonals.push_back(DiagonalLine(i + depth, -1));
             mTakenDiagonals.push_back(DiagonalLine(i - depth, 1));
-            miniMax(mTakenHorizontals,mTakenDiagonals,depth +1);
+            miniMax(mTakenHorizontals, mTakenDiagonals, depth + 1);
         }
     }
 }
@@ -67,9 +68,8 @@ int main()
 {
     vector<int> startHorizontal = {};
     vector<DiagonalLine> startDiagonal = {};
-    miniMax(startHorizontal,startDiagonal,0);
+    miniMax(startHorizontal, startDiagonal, 0);
 
-    cout << amountOfSolutions;
+    cout << amountOfSolutions << endl;
     return 0;
-
 };
