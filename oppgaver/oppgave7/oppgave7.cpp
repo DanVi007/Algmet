@@ -5,22 +5,24 @@ const int N = 10;
 
 int board[N][N] = {};
 
-vector<int[2]> groups;
 
-struct Position{
+struct Position
+{
     int xCord;
     int yCord;
 
-    Position(int x, int y){
+    Position(int x, int y)
+    {
         xCord = x;
         yCord = y;
     }
-    
-
-
 };
 
-void buildBoard(){
+
+vector<vector<Position>> groups;
+
+void buildBoard()
+{
     board[1][1] = 1;
     board[1][2] = 1;
     board[2][1] = 1;
@@ -45,59 +47,54 @@ void buildBoard(){
 
     board[9][8] = 1;
     board[9][9] = 1;
-
-
-
-    
 }
 
-
-void printBoard(){
-    for(int y = N-1; y>= 0;y--){
-        for(int x = 0; x< N;x++){
-            //cout << board[x][y] << " | ";
+void printBoard()
+{
+    for (int y = N - 1; y >= 0; y--)
+    {
+        for (int x = 0; x < N; x++)
+        {
+            // cout << board[x][y] << " | ";
             cout << board[x][y] << " , ";
         }
         cout << "\n";
-        //cout << "---------------------------------------";
-        //cout << "\n";
-
+        // cout << "---------------------------------------";
+        // cout << "\n";
     }
-
 }
 
-
-/*
-void findGroup(int i, int j,vector<int[2]> group){
-    if(board[i][j] == 1){
-        for(int cord[2] : group){
-            if((i +1 == cord[0] || i -1 == cord[0] ) 
-            && (j+i == cord[1] || j-1 == cord[1])){
-                group.insert([i,j]);
+void findGroup(int i, int j, vector<Position> group)
+{
+    if (board[i][j] == 1)
+    {
+        for (Position cord : group)
+        {
+            if ((i + 1 == cord.xCord || i - 1 == cord.xCord) && (j + i == cord.yCord || j - 1 == cord.yCord))
+            {
+                group.push_back(Position(i, j));
             }
         }
+    } else {
+        groups.push_back(group);
     }
 }
-*/
 
-
-
-int main(){
+int main()
+{
     buildBoard();
-    //printBoard();
+    // printBoard();
     vector<Position> groupToAdd;
-       
-    groupToAdd.push_back(Position(1,2));
-    //groupToAdd.insert(new Position(1,1));
 
-    
-    //findGroup(1,1,groupToAdd);
+    groupToAdd.push_back(Position(1, 2));
+    // groupToAdd.insert(new Position(1,1));
 
-    for(Position cord: groupToAdd){
-        cout << cord;
+    findGroup(1,1,groupToAdd);
+
+    for (Position cord : groupToAdd)
+    {
+        cout << cord.xCord << cord.yCord;
     }
-    
 
     return 0;
-
 }
