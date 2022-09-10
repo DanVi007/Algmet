@@ -36,93 +36,26 @@ void printBoard()
     {
         for (int x = 0; x < N; x++)
         {
-            // cout << board[x][y] << " | ";
             cout << board[x][y] << " , ";
         }
         cout << "\n";
-        // cout << "---------------------------------------";
-        // cout << "\n";
     }
 }
 void visit(int i, int j)
 {
     board[i][j] = 2;
     tempGroup.push_back(pair<int, int>(i, j));
-
 }
-
-
 
 void groupNodes(int nextI, int nextJ)
 {
     int i = nextI;
     int j = nextJ;
-    /*
-        while ((board[i][j] == 2 || board[i][j] == 0) && i < 10 && j < 10)
-        {
-            if (j == 9 && i < 9)
-            {
-                i++;
-                j = 0;
-            }
-            else if (j == 9 && i == 9)
-            {
-                return;
-            }
-            else
-            {
-                j++;
-            }
-        }*/
+
     if (board[i][j] != 0)
     {
         visit(i, j);
-        
-    }
-    if (board[i][j + 1] == 1)
-    {
-        groupNodes(i, j + 1);
-    }
-    if (board[i + 1][j] == 1)
-    {
-        groupNodes(i + 1, j);
-    }
-    if (board[i][j - 1] == 1)
-    {
-        groupNodes(i, j - 1);
-    }
-    if (board[i - 1][j] == 1)
-    {
-        groupNodes(i - 1, j);
-    }
-}
 
-void gatherGroups()
-{
-
-    for (int x = 0; x < N; x++)
-    {
-        for (int y = 0; y < N; y++)
-        {
-            if (board[x][y] == 1)
-            {
-                groupNodes(x, y);
-                groups.push_back(tempGroup);
-                tempGroup.clear();
-            }
-        }
-    }
-}
-
-/*
-void groupNodes(int i, int j)
-{
-
-    if (board[i][j] == 1)
-    {
-
-        visit(i, j);
-        cout << "\nGroup number is: " << gGroupNumber + 1 << "\n";
         if (board[i][j + 1] == 1)
         {
             groupNodes(i, j + 1);
@@ -140,18 +73,24 @@ void groupNodes(int i, int j)
             groupNodes(i - 1, j);
         }
     }
+}
+void gatherGroups()
+{
 
-    if (j > 8 && i < 9)
+    for (int x = 0; x < N; x++)
     {
-        groupNodes(i + 1, 0);
-    }
-    else if (j < 9 && i < 10)
-    {
-
-        groupNodes(i, j + 1);
+        for (int y = 0; y < N; y++)
+        {
+            if (board[x][y] == 1)
+            {
+                groupNodes(x, y);
+                groups.push_back(tempGroup);
+                tempGroup.clear();
+            }
+        }
     }
 }
-*/
+
 int main()
 {
     buildBoard();
@@ -160,13 +99,15 @@ int main()
     gatherGroups();
 
     cout << "\n-------------------------------------\n";
-    cout << "\nTotal amount of groups: " << groups.size(); 
-    
+    cout << "\nTotal amount of groups: " << groups.size();
+
     cout << "\n-------------------------------------\n";
-    
-    for(int i = 1; i <= groups.size();i++) {
+
+    for (int i = 1; i <= groups.size(); i++)
+    {
         cout << "Group : " << i << "\n";
-        for(pair<int,int> cord :  groups[i-1]){
+        for (pair<int, int> cord : groups[i - 1])
+        {
             cout << cord.first << " , " << cord.second << "\n";
         }
     }
