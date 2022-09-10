@@ -105,7 +105,7 @@ int main()
 
     for (int i = 1; i <= groups.size(); i++)
     {
-        cout << "Group : " << i <<  ", number of pieces in group : "
+        cout << "Group : " << i << ", number of pieces in group : "
              << groups[i - 1].size() << "\n";
         for (pair<int, int> cord : groups[i - 1])
         {
