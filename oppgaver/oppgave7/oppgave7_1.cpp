@@ -46,32 +46,16 @@ void visit(int i, int j)
     board[i][j] = 2;
     tempGroup.push_back(pair<int, int>(i, j));
 }
-
-void groupNodes(int nextI, int nextJ)
+void groupNodes(int i, int j)
 {
-    int i = nextI;
-    int j = nextJ;
-
-    if (board[i][j] != 0)
+    if (board[i][j] == 1)
     {
         visit(i, j);
 
-        if (board[i][j + 1] == 1)
-        {
-            groupNodes(i, j + 1);
-        }
-        if (board[i + 1][j] == 1)
-        {
-            groupNodes(i + 1, j);
-        }
-        if (board[i][j - 1] == 1)
-        {
-            groupNodes(i, j - 1);
-        }
-        if (board[i - 1][j] == 1)
-        {
-            groupNodes(i - 1, j);
-        }
+        groupNodes(i, j + 1);
+        groupNodes(i + 1, j);
+        groupNodes(i, j - 1);
+        groupNodes(i - 1, j);
     }
 }
 void gatherGroups()
@@ -98,7 +82,6 @@ int main()
     cout << "\n-------------------------------------\n";
     gatherGroups();
 
-    cout << "\n-------------------------------------\n";
     cout << "\nTotal amount of groups: " << groups.size();
 
     cout << "\n-------------------------------------\n";
