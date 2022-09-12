@@ -27,14 +27,15 @@ struct Node
         left = l, right = r;
     }
 };
-
+Node *byggBFStre();
 Node *byggTre();
 bool erBST(Node *n);  //  Oppgave B
 int finnMax(Node *n); //  Oppgave A2
 int finnMin(Node *n); //  Oppgave A1
 
 Node *gRoot = nullptr; ///<  Peker til hele treets rot.
-const int MIN = 0,     ///<  Verdier mindre/større enn ALLE ID'er i treet.
+Node *bfsRoot = nullptr;
+const int MIN = 0, ///<  Verdier mindre/større enn ALLE ID'er i treet.
     MAX = 9999;
 
 /**
@@ -45,15 +46,28 @@ int main()
 
     gRoot = byggTre();
 
+    bfsRoot = byggBFStre();
     cout << "\n\nTester oppgave A - Minste og største verdi i treet:\n";
     cout << "Minste  verdi i treet er:  " << finnMin(gRoot) << '\n'; //   3
     cout << "Største verdi i treet er:  " << finnMax(gRoot) << '\n'; //  82
-
-    cout << "\n\nTester oppgave B - Er treet et binært søketre eller ei:\n";
-    cout << "Treet er " << (erBST(gRoot) ? "" : "IKKE ") //  Er IKKE BST!
-         << "et binært SØKEtre\n\n";
+                                                                     
+                                                                         cout << "\n\nTester oppgave B - Er treet et binært søketre eller ei:\n";
+                                                                         cout << "Treet er " << (erBST(bfsRoot) ? "" : "IKKE ") //  Er IKKE BST!
+                                                                              << "et binært SØKEtre\n\n";
+                                                                     cout << "\n\nTester oppgave B - Er treet et binært søketre eller ei:\n";
+                                                                         cout << "Treet er " << (erBST(gRoot) ? "" : "IKKE ") //  Er IKKE BST!
+                                                                              << "et binært SØKEtre\n\n";
 
     return 0;
+}
+
+Node *byggBFStre()
+{
+    Node *n1 = new Node(1, nullptr, nullptr),
+         *n3 = new Node(3, n1, nullptr),
+         *n5 = new Node(5, nullptr, nullptr),
+         *n4 = new Node(4, n3, n5);
+    return n4;
 }
 
 /**
@@ -103,9 +117,78 @@ Node *byggTre()
  */
 bool erBST(Node *node)
 {
+    if (node)
+    {
+        bool left = true;
+        bool right =true;
+        if(node->left){
+            if(finnMin(node->left) < node->ID) {
+                left = erBST(node->left);
+            } else {
+                left = false;
+            }
+        }
 
-    //  LAG INNMATEN  (se oppgaveteksten)
-    return true; // STRYK DENNE LINJEN!
+        if(node->right) {
+            if(finnMax(node->right) >= node->ID) {
+                right = erBST(node->right);
+            } else {
+                right = false;
+            }
+        } 
+
+        return left && right;
+                    }
+    return false;
+    /*
+    if(node){
+         if(finnMin(node->left ) >= node->ID || finnMax(node->right) < node->ID) {
+           cout << "helloe \n";
+            cout << finnMax(node->right) << "\n";
+            cout << node->ID<< "\n";
+            return false;
+        }
+
+        bool left = erBST(node->left);
+        if(!left ){
+            return false;
+        }
+
+        bool right = erBST(node->right);
+        if(!right){
+            return false;
+        }
+
+    }
+    return true;
+*/
+    /*
+        if (node)
+        {
+            bool left = erBST(node->left);
+            bool right = erBST(node->right);
+            if(finnMin(node->left ) < node->ID && finnMax(node->right) >= node->ID) {
+                return true;
+            } else {
+                return false;
+            }
+
+
+        }
+
+        return erBST(node->left) && erBST(node->right);
+
+        erBST(node->left);
+        erBST(node->right);
+
+        if (finnMax(node->right) >= node->ID && finnMin(node->left) < node->ID)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }*/
 }
 
 /**
@@ -116,12 +199,12 @@ bool erBST(Node *node)
  */
 int finnMax(Node *node)
 {
-    return node ?  max(node->ID, max(finnMax(node->left), finnMax(node->right))) : INT_MIN;  
-   /* 
-    if (node)   
-        return max(node->ID, max(finnMax(node->left), finnMax(node->right)));   
-    return INT_MIN;
-    */
+    return node ? max(node->ID, max(finnMax(node->left), finnMax(node->right))) : INT_MIN;
+    /*
+     if (node)
+         return max(node->ID, max(finnMax(node->left), finnMax(node->right)));
+     return INT_MIN;
+     */
 }
 
 /**
@@ -138,4 +221,5 @@ int finnMin(Node *node)
         int right = finnMin(node->right);
         return min(node->ID, min(left, right));
     }
-    return INT_MAX; }
+    return INT_MAX;
+}
