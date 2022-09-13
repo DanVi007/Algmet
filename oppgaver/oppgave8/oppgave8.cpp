@@ -50,13 +50,13 @@ int main()
     cout << "\n\nTester oppgave A - Minste og største verdi i treet:\n";
     cout << "Minste  verdi i treet er:  " << finnMin(gRoot) << '\n'; //   3
     cout << "Største verdi i treet er:  " << finnMax(gRoot) << '\n'; //  82
-                                                                     
-                                                                         cout << "\n\nTester oppgave B - Er treet et binært søketre eller ei:\n";
-                                                                         cout << "Treet er " << (erBST(bfsRoot) ? "" : "IKKE ") //  Er IKKE BST!
-                                                                              << "et binært SØKEtre\n\n";
-                                                                     cout << "\n\nTester oppgave B - Er treet et binært søketre eller ei:\n";
-                                                                         cout << "Treet er " << (erBST(gRoot) ? "" : "IKKE ") //  Er IKKE BST!
-                                                                              << "et binært SØKEtre\n\n";
+
+    cout << "\n\nTester oppgave B - Er treet et binært søketre eller ei:\n";
+    cout << "Treet er " << (erBST(bfsRoot) ? "" : "IKKE ") //  Er IKKE BST!
+         << "et binært SØKEtre\n\n";
+    cout << "\n\nTester oppgave B - Er treet et binært søketre eller ei:\n";
+    cout << "Treet er " << (erBST(gRoot) ? "" : "IKKE ") //  Er IKKE BST!
+         << "et binært SØKEtre\n\n";
 
     return 0;
 }
@@ -120,75 +120,34 @@ bool erBST(Node *node)
     if (node)
     {
         bool left = true;
-        bool right =true;
-        if(node->left){
-            if(finnMin(node->left) < node->ID) {
+        bool right = true;
+        if (node->left)
+        {
+            if (finnMin(node->left) < node->ID)
+            {
                 left = erBST(node->left);
-            } else {
+            }
+            else
+            {
                 left = false;
             }
         }
 
-        if(node->right) {
-            if(finnMax(node->right) >= node->ID) {
+        if (node->right)
+        {
+            if (finnMax(node->right) >= node->ID)
+            {
                 right = erBST(node->right);
-            } else {
+            }
+            else
+            {
                 right = false;
             }
-        } 
+        }
 
         return left && right;
-                    }
-    return false;
-    /*
-    if(node){
-         if(finnMin(node->left ) >= node->ID || finnMax(node->right) < node->ID) {
-           cout << "helloe \n";
-            cout << finnMax(node->right) << "\n";
-            cout << node->ID<< "\n";
-            return false;
-        }
-
-        bool left = erBST(node->left);
-        if(!left ){
-            return false;
-        }
-
-        bool right = erBST(node->right);
-        if(!right){
-            return false;
-        }
-
     }
-    return true;
-*/
-    /*
-        if (node)
-        {
-            bool left = erBST(node->left);
-            bool right = erBST(node->right);
-            if(finnMin(node->left ) < node->ID && finnMax(node->right) >= node->ID) {
-                return true;
-            } else {
-                return false;
-            }
-
-
-        }
-
-        return erBST(node->left) && erBST(node->right);
-
-        erBST(node->left);
-        erBST(node->right);
-
-        if (finnMax(node->right) >= node->ID && finnMin(node->left) < node->ID)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }*/
+    return false;
 }
 
 /**
