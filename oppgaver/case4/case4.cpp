@@ -59,7 +59,7 @@ void sortNodes()
     {
         sorted = false;
         int index = 0;
-        while (index <= lastIndex)
+        while (index < lastIndex)
         {
             if ((int)nodes[index]->ID > (int)nodes[index + 1]->ID)
             {
@@ -133,10 +133,7 @@ Node *byggTre()
 int main()
 {
 
-    if ((int)'a'  (int)'b')
-    {
-        cout << "asklødfjløasdjfl";
-    }
+    
     Node *rootNode = byggTre();
     findHighestOddLevel(rootNode);
 
@@ -161,8 +158,8 @@ int main()
         cout << (int)nodes[i]->ID << " ";
     }
     cout << "\n\n";
+    cout << "hello";
     sortNodes();
-
     for (int i = 1; i < lastIndex; i++)
     {
         cout << (int)nodes[i]->ID << " ";
