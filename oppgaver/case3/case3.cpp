@@ -3,7 +3,7 @@ using namespace std;
 
 struct Node
 {
-    char ID;     // Nodens ID/key/navn (en bokstav).
+    int ID;     // Nodens ID/key/navn et (tall) 
     int nivaa;   // Nodens nivå i treet ift. rotnoden.
     Node *left;  // Peker til venstre subtre, evt nullptr.
     Node *right; // Peker til høyre subtre, evt nullptr.
@@ -44,6 +44,28 @@ void findValues(Node* node, int& sumNivaa, int& antall) {
         findValues(node->left, sumNivaa, antall);
         findValues(node->right, sumNivaa, antall);
     }
+} 
+
+
+void writeParents(Node * node){
+   if(node){
+    if(!node->left && !node->right){
+        Node * nodePointer = gRoot; 
+        int searchValue = node->ID;
+        while(nodePointer){
+            cout << nodePointer->ID << " ";
+           if(searchValue < nodePointer->ID){
+            nodePointer = nodePointer->left;
+           }else {
+            nodePointer = nodePointer->right;
+           } 
+        }
+        cout << "\n";
+
+    }
+    writeParents(node->left);
+    writeParents(node->right);
+   } 
 }
 Node *byggBFStre()
 {
@@ -123,6 +145,11 @@ setLevel(gRoot);
     
    cout << "\n\n" << double(sum)/ double(antall); 
 
+
+    gRoot = byggBFStre();
+    cout << gRoot->ID;
+    cout << "\n\nForeldre\n\n";
+    writeParents(gRoot);
 
     return 0;
 }
