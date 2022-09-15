@@ -151,51 +151,6 @@ bool erBST(Node *node)
     }
     return true;
 }
-
-/**
- *  OPPGAVE B - Finner ut om et binært tre er et binært SØKEtre (BST)
- *
- *  @param    node  -  Aktuell node å behandle
- *  @return   Om treet under 'node' er binært søketre (BST) eller ei
- *  @see      finnMax(...)
- *  @see      finnMin(...)
- */
-/*
-bool erBST(Node *node)
-{
-    if (node)
-    {
-        bool left = true;
-        bool right = true;
-        if (node->left)
-        {
-            if (finnMin(node->left) < node->ID)
-            {
-                left = erBST(node->left);
-            }
-            else
-            {
-                left = false;
-            }
-        }
-
-        if (node->right)
-        {
-            if (finnMax(node->right) >= node->ID)
-            {
-                right = erBST(node->right);
-            }
-            else
-            {
-                right = false;
-            }
-        }
-
-        return left && right;
-    }
-    return false;
-}
-*/
 /**
  *  OPPGAVE A2 - Finner STØRSTE verdi i et binært (IKKE nødvendigvis SØKE)tre.
  *
