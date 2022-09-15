@@ -8,6 +8,12 @@
  *   @file	  OPPG_08-HOVEDRISS.CPP
  *   @author  Frode Haug, NTNU
  */
+// https://stackoverflow.com/questions/1371012/how-do-i-print-utf-8-from-c-console-application-on-windows?noredirect=1&lq=1
+#include <cstdio>
+#include <windows.h>
+#pragma execution_character_set("utf-8")
+
+
 
 #include <iostream>
 using namespace std;
@@ -29,6 +35,8 @@ struct Node
 };
 Node *byggBFStre();
 Node *byggTre();
+Node *byggBFStre2();
+
 bool erBST(Node *n);  //  Oppgave B
 int finnMax(Node *n); //  Oppgave A2
 int finnMin(Node *n); //  Oppgave A1
@@ -43,7 +51,7 @@ const int MIN = 0, ///<  Verdier mindre/større enn ALLE ID'er i treet.
  */
 int main()
 {
-
+    SetConsoleOutputCP(65001);
     gRoot = byggTre();
 
     bfsRoot = byggBFStre();
@@ -58,6 +66,11 @@ int main()
     cout << "Treet er " << (erBST(gRoot) ? "" : "IKKE ") //  Er IKKE BST!
          << "et binært SØKEtre\n\n";
 
+    gRoot = byggBFStre2();
+    cout << "\n\nTester oppgave B - Er treet et binært søketre eller ei:\n";
+    cout << "Treet er " << (erBST(gRoot) ? "" : "IKKE ") //  Er IKKE BST!
+         << "et binært SØKEtre\n\n";
+
     return 0;
 }
 
@@ -67,6 +80,17 @@ Node *byggBFStre()
          *n3 = new Node(3, n1, nullptr),
          *n5 = new Node(5, nullptr, nullptr),
          *n4 = new Node(4, n3, n5);
+    return n4;
+}
+
+Node *byggBFStre2()
+{
+    Node *n1 = new Node(1, nullptr, nullptr),
+         *n9 = new Node(9, nullptr, nullptr),
+         *n5 = new Node(5, nullptr, nullptr),
+         *n3 = new Node(3, n1, n9),
+         *n4 = new Node(4, n3, n5);
+
     return n4;
 }
 
@@ -119,6 +143,28 @@ bool erBST(Node *node)
 {
     if (node)
     {
+        if (finnMax(node->left) >= node->ID || finnMin(node->right) < node->ID)
+        {
+            return false;
+        }
+        return erBST(node->left) && erBST(node->right);
+    }
+    return true;
+}
+
+/**
+ *  OPPGAVE B - Finner ut om et binært tre er et binært SØKEtre (BST)
+ *
+ *  @param    node  -  Aktuell node å behandle
+ *  @return   Om treet under 'node' er binært søketre (BST) eller ei
+ *  @see      finnMax(...)
+ *  @see      finnMin(...)
+ */
+/*
+bool erBST(Node *node)
+{
+    if (node)
+    {
         bool left = true;
         bool right = true;
         if (node->left)
@@ -149,7 +195,7 @@ bool erBST(Node *node)
     }
     return false;
 }
-
+*/
 /**
  *  OPPGAVE A2 - Finner STØRSTE verdi i et binært (IKKE nødvendigvis SØKE)tre.
  *
