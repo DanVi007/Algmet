@@ -1,4 +1,4 @@
-
+// TODO:  add comments
 #include <iostream>
 using namespace std;
 struct Node
@@ -38,58 +38,50 @@ void findHighestOddLevel(Node *node)
     currentLevel--;
 }
 
-Node *nodes[100];
+char keys[100];
 int lastIndex;
 
-void listNodes(Node *node)
+void listKeys(Node *node)
 {
     if (node)
     {
-        listNodes(node->left);
-        nodes[lastIndex] = node;
+        listKeys(node->left);
+        keys[lastIndex] = node->ID;
         lastIndex++;
-        listNodes(node->right);
+        listKeys(node->right);
     }
 }
 
-void sortNodes()
+void sortKeys()
 {
 
-    for (int i = 0; i < lastIndex -1 ; i++)
+    for (int i = 0; i < lastIndex - 1; i++)
     {
-        for (int u = 0; u < lastIndex-1; u++)
+        for (int u = 0; u < lastIndex - 1; u++)
         {
             {
 
-                if (nodes[u]->ID > nodes[u + 1]->ID)
+                if (keys[u] > keys[u + 1])
                 {
-                    Node *oldNode = nodes[u];
-                    nodes[u] = nodes[u + 1];
-                    nodes[u + 1] = oldNode;
+                    char oldKey = keys[u];
+                    keys[u] = keys[u + 1];
+                    keys[u + 1] = oldKey;
                 }
             }
         }
     }
-   
 }
-int counter =0 ;
 
-
-void setNodesBack(Node *node)
+void setKeysBack(Node *node)
 {
     if (node)
     {
-    cout << "\n#" << counter << endl;  
-    counter++;
-        setNodesBack(node->left);
-        node->ID = nodes[lastIndex]->ID;
+        setKeysBack(node->left);
+        node->ID = keys[lastIndex];
         lastIndex++;
-       cout << lastIndex<< " , ";
-        setNodesBack(node->right);
+        setKeysBack(node->right);
     }
 }
-
-
 
 Node *byggBFStre()
 {
@@ -135,30 +127,36 @@ Node *byggTre()
          *n11 = new Node(11, n82, n5),
          *n17 = new Node(17, n33, n11);
     return n17;
-} 
+}
 
-//https://stackoverflow.com/questions/36802354/print-binary-tree-in-a-pretty-way-using-c
-void printBT(const std::string& prefix, const Node* node, bool isLeft)
+// https://stackoverflow.com/questions/36802354/print-binary-tree-in-a-pretty-way-using-c
+void printBT(const std::string &prefix, const Node *node, bool isLeft)
 {
     if (node != nullptr)
     {
         std::cout << prefix;
         std::cout << (isLeft ? "|--" : "L--");
         // print the value of the node
-        std::cout << (int)node->ID<< std::endl;
+        std::cout << (int)node->ID << std::endl;
         // enter the next tree level - left and right branch
         printBT(prefix + (isLeft ? "|   " : "    "), node->right, true);
         printBT(prefix + (isLeft ? "|   " : "    "), node->left, false);
     }
 }
 
-void printBT(const Node* node)
+void printBT(const Node *node)
 {
     printBT("", node, false);
+} 
+Node * gNode1 = nullptr;
+Node * gNode2 = nullptr;
+Node * gPrevNode = nullptr;
+void findNodes(Node * node){
+
 }
 int main()
 {
-    
+
     Node *rootNode = byggTre();
     findHighestOddLevel(rootNode);
 
@@ -170,34 +168,38 @@ int main()
     findHighestOddLevel(byggBFStre());
 
     cout << highestOddLevel << " , " << (int)highestOddNode->ID << "\n";
-    // oppgave c
+    // oppgave b
 
-    nodes[0] = new Node(0, nullptr, nullptr);
+    keys[0] = 0;
     lastIndex = 1;
 
     newRootNode = byggTre();
     cout << endl;
     printBT(newRootNode);
-    listNodes(newRootNode);
+    listKeys(newRootNode);
     for (int i = 1; i < lastIndex; i++)
     {
-        cout << (int)nodes[i]->ID << " ";
+        cout << (int)keys[i] << " ";
     }
     cout << "\n\n";
-    sortNodes();
+    sortKeys();
     for (int i = 1; i < lastIndex; i++)
     {
-        cout << (int)nodes[i]->ID << " ";
+        cout << (int)keys[i] << " ";
     }
     cout << endl;
     lastIndex = 1;
-    setNodesBack(newRootNode);
-    
+    setKeysBack(newRootNode);
+
     cout << (int)newRootNode->ID << endl;
     cout << (int)newRootNode->right->ID << endl;
     cout << (int)newRootNode->right->right->ID << endl;
-    
-    cout << endl << endl;
+
+    cout << endl
+         << endl;
     printBT(newRootNode);
+
+
+    // oppgave c
     return 0;
 }
