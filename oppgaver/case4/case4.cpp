@@ -92,6 +92,14 @@ Node *byggBFStre()
     return n4;
 }
 
+Node *byggFeilBStre()
+{
+    Node *n1 = new Node(5, nullptr, nullptr),
+         *n3 = new Node(3, n1, nullptr),
+         *n5 = new Node(1, nullptr, nullptr),
+         *n4 = new Node(4, n3, n5);
+    return n4;
+}
 /**
  *  Bygger et binært testtre.
  *
@@ -128,6 +136,25 @@ Node *byggTre()
          *n17 = new Node(17, n33, n11);
     return n17;
 }
+Node *byggFeilBFStre2()
+{
+    Node *n1 = new Node(4, nullptr, nullptr),
+         *n3 = new Node(3, n1, nullptr),
+         *n5 = new Node(5, nullptr, nullptr),
+         *n4 = new Node(1, n3, n5);
+    return n4;
+}
+
+Node *byggFeilBFStre3()
+{
+    Node *n1 = new Node(5, nullptr, nullptr),
+         *n9 = new Node(9, nullptr, nullptr),
+         *n5 = new Node(1, nullptr, nullptr),
+         *n3 = new Node(3, n1, n9),
+         *n4 = new Node(4, n3, n5);
+
+    return n4;
+}
 
 // https://stackoverflow.com/questions/36802354/print-binary-tree-in-a-pretty-way-using-c
 void printBT(const std::string &prefix, const Node *node, bool isLeft)
@@ -147,12 +174,33 @@ void printBT(const std::string &prefix, const Node *node, bool isLeft)
 void printBT(const Node *node)
 {
     printBT("", node, false);
-} 
-Node * gNode1 = nullptr;
-Node * gNode2 = nullptr;
-Node * gPrevNode = nullptr;
-void findNodes(Node * node){
-
+}
+Node *gNode1 = nullptr;
+Node *gNode2 = nullptr;
+Node *gPrevNode = nullptr;
+void findNodes(Node *node)
+{
+    if (node)
+    {
+        findNodes(node->left);
+        if (!gPrevNode)
+        {
+            gPrevNode = node;
+        }
+        if (node->ID < gPrevNode->ID)
+        {
+            if (!gNode1)
+            {
+                gNode1 = gPrevNode;
+            }
+            else
+            {
+                gNode2 = node;
+            }
+        }
+        gPrevNode = node;
+        findNodes(node->right);
+    }
 }
 int main()
 {
@@ -199,7 +247,45 @@ int main()
          << endl;
     printBT(newRootNode);
 
-
     // oppgave c
+    cout << "Oppgave c ---------------------" << endl;
+    Node *feilBSrot = byggFeilBStre();
+    printBT(feilBSrot);
+
+    cout << endl;
+    findNodes(feilBSrot);
+    cout << (int)gNode1->ID << endl;
+    cout << (int)gNode2->ID << endl;
+
+
+
+   // ny test  
+   cout << "Ny test -----------------------" << endl;
+   
+    gNode1 = nullptr;
+    gNode2 = nullptr;
+    gPrevNode = nullptr;
+    feilBSrot = byggFeilBFStre2();
+    printBT(feilBSrot);
+
+    cout << endl;
+    findNodes(feilBSrot);
+    cout << (int)gNode1->ID << endl;
+    cout << (int)gNode2->ID << endl;
+
+   // ny test  
+   cout << "Ny test -----------------------" << endl;
+   
+    gNode1 = nullptr;
+    gNode2 = nullptr;
+    gPrevNode = nullptr;
+    feilBSrot = byggFeilBFStre3();
+    printBT(feilBSrot);
+
+    cout << endl;
+    findNodes(feilBSrot);
+    cout << (int)gNode1->ID << endl;
+    cout << (int)gNode2->ID << endl;
+   
     return 0;
 }
