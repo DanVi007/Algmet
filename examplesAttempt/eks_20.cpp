@@ -2,7 +2,8 @@
 #include <utility>
 using namespace std;
 
-const int N = 4;
+// const int N = 4;
+const int N = 2;
 const int maxNumber = 34;
 
 // this is necessary because of:
@@ -17,19 +18,19 @@ struct Board
     */
 };
 
-int startingPosition[N][N];
-
-void generateStartingPosition()
+Board generateStartingPosition()
 {
+    Board startingPosition;
     int counter = N * N;
     for (int y = 0; y < N; y++)
     {
         for (int x = 0; x < N; x++)
         {
-            startingPosition[x][y] = counter;
+            startingPosition.array[x][y] = counter;
             counter--;
         }
     }
+   return startingPosition; 
 }
 void display(Board board)
 {
@@ -63,34 +64,45 @@ void swap(int x1, int y1, int x2, int y2, Board &board)
     board.array[x1][y1] = board.array[x2][y2];
     board.array[x2][y2] = temp;
 }
-//https://www.geeksforgeeks.org/pair-in-cpp-stl/
+// https://www.geeksforgeeks.org/pair-in-cpp-stl/
+/*
 pair<int, int> translateIndexToCord(int index)
+
 {
     return pair<int,int> PAIR(index %N, (int)index /N );
 
 
 }
+*/
 
 void printAllPermutations(Board board, int startingIndex, int endIndex)
 {
     if (startingIndex == endIndex)
     {
         display(board);
+        cout << "-----------" << endl;
     }
     else
     {
         for (int i = startingIndex; i <= endIndex; i++)
         {
+            swap(i % N, (int)i / N,
+                 startingIndex % N + 1, (int)startingIndex / N, board);
+            printAllPermutations(board, startingIndex + 1, endIndex);
+            swap(startingIndex % N + 1, (int)startingIndex / N,
+                 i % N, (int)i / N, board);
         }
     }
 }
 
 int main()
+
 {
-    Board testBoard;
-    testBoard.array[0][1] = 5;
-    testBoard.array[3][1] = 5;
-    display(testBoard);
+    Board startingPosition = generateStartingPosition();
+    display(startingPosition);
+
+    cout << "----------------" << endl;
+    printAllPermutations(startingPosition, 0, N - 1);
 
     return 0;
 }
