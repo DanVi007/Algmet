@@ -80,7 +80,7 @@ void printAllPermutations(Board board, int startingIndex, int endIndex)
     if (startingIndex == endIndex)
     {
         display(board);
-        cout << "-----------" << endl;
+        cout << "-----------";
     }
     else
     {
