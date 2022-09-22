@@ -29,7 +29,7 @@ Board generateStartingPosition()
             counter--;
         }
     }
-   return startingPosition; 
+    return startingPosition;
 }
 
 Board startingPosition = generateStartingPosition();
@@ -66,6 +66,7 @@ void swap(int x1, int y1, int x2, int y2, Board &board)
     board.array[x1][y1] = board.array[x2][y2];
     board.array[x2][y2] = temp;
 }
+
 // https://www.geeksforgeeks.org/pair-in-cpp-stl/
 /*
 pair<int, int> translateIndexToCord(int index)
@@ -76,13 +77,14 @@ pair<int, int> translateIndexToCord(int index)
 
 }
 */
-
+int counter = 0;
 void printAllPermutations(Board board, int startingIndex, int endIndex)
 {
     if (startingIndex == endIndex)
     {
         display(board);
         cout << "-----------" << endl;
+        counter++;
     }
     else
     {
@@ -98,13 +100,26 @@ void printAllPermutations(Board board, int startingIndex, int endIndex)
 }
 
 int main()
-
 {
-    display(startingPosition);
+    int startingIndex = 0;
+    int endIndex = N * N - 1;
+    for (int i = startingIndex; i <= endIndex; i++)
+    {
 
-    cout << "----------------" << endl;
-    cout << "Permutations" << endl;
-    printAllPermutations(startingPosition, 0, N*N - 1);
+        //       cout << "index " << i << endl;
+        //       cout << (int)i / N << " , " ;
+        //      cout << i % N << endl;
+        //        cout << startingPosition.array[(int)i / N][i % N];
+        //        cout << endl;
+        //     cout << startingPosition.array[(int)startingIndex / N][startingIndex % N];
+        //     cout << endl;
+    }
+    int i = 1; 
+
+//    swap(i % N, (int)i / N,
+//         startingIndex % N , (int)startingIndex / N, startingPosition);
+    printAllPermutations(startingPosition, 0, N*N- 1);
+    cout << counter << endl;
 
     return 0;
 }
