@@ -14,7 +14,7 @@
 using namespace std;
 
 
-const int N = 4;                       ///<  Arrayens lengde.
+const int N = 3;                       ///<  Arrayens lengde.
 
 
 void bytt(int & tall1, int & tall2);
@@ -81,16 +81,23 @@ void display(const int arr[], const int n) {
  */
 void permuter(int arr[], const int i, const int n) {
     if (i == n-1)                       //  Nådd en ny permutasjon:
-        display(arr, n);                //  Skriver ut arrayens innhold.
+        //display(arr, n);                //  Skriver ut arrayens innhold.
+        cout <<""; 
     else {                              //  Skal permutere:
         permuter(arr, i+1, n);          //  Beholder nåværende nr.'i'.
-                                        //    Permuterer resten.
+        cout << i << endl;                               //    Permuterer resten.
+        cout << "first" ;
+        display(arr,N);  
         for (int t = i+1;  t < n;  t++) {
             bytt(arr[i], arr[t]);       //  Bytter nr.'i' etter tur med
                                         //    ALLE de andre etterfølgende.
             permuter(arr, i+1, n);      //  For hver av ombyttene: permuterer
+            cout << "second" ;
+            display(arr,N);  
         }                               //     resten av de etterfølgende.
         roterVenstre(arr, i, n);        //  Gjenoppretter opprinnelig array!!!
+        cout << "third" ;
+        display(arr,N);  
     }
 }
 
