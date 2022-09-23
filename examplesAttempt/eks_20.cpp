@@ -33,11 +33,26 @@ Board generateStartingPosition()
     return startingPosition;
 }
 
-Board generateCorrectBoard(){
-    Board correctPos;      
+Board generateboard(int array[N][N])
+{
+    Board correctPos;
 
-    int numbers[4][4] = {{16,15,2,1}, {4,3,14,13},{5,10,7,12},{9,6,11,8}};
-    
+    for (int y = 0; y < N; y++)
+    {
+        for (int x = 0; x < N; x++)
+        {
+            correctPos.array[x][y] = array[x][y];
+        }
+    }
+    return correctPos;
+}
+
+Board generateCorrectBoard()
+{
+    Board correctPos;
+
+    int numbers[4][4] = {{16, 15, 2, 1}, {4, 3, 14, 13}, {5, 10, 7, 12}, {9, 6, 11, 8}};
+
     for (int y = 0; y < N; y++)
     {
         for (int x = 0; x < N; x++)
@@ -61,24 +76,26 @@ void display(Board board)
         cout << endl;
     }
 }
-//TODO: REFACTOR
+// TODO: REFACTOR
 bool checkLine(vector<int> line)
 {
     int counter = 0;
-    for (int i = 0; i < N; i++)
+    for (int i = 0; i < line.size(); i++)
     {
         counter += line[i];
-        if(line.size() == N && counter == maxNumber){
+        if (i == N - 1 && counter == maxNumber)
+        {
             return true;
         }
-        if (counter > maxNumber)
+        if (counter >= maxNumber)
         {
             return false;
         }
     }
-//TODO: use shorthand
-    if(line.size() >= N){
-        return false; 
+    // TODO: use shorthand
+    if (line.size() >= N)
+    {
+        return false;
     }
     return true;
 }
@@ -90,40 +107,64 @@ bool checkBoard(Board board, int currentIndex)
 
     bool correctSum = false;
     vector<int> line;
-    // horizontal 
-    for (int _x = 0; _x <= x; _x++)
-    {
-        line.push_back(board.array[_x][y]);
-    }
-    //vertical
-    correctSum = checkLine(line);
-    if (correctSum)
+    // vertical
+    for (int i = 0; i < x; i++)
     {
         line.clear();
-        for (int _y = 0; _y <= y; _y++)
+        for (int _x = 0; _x <= x; _x++)
         {
-            line.push_back(board.array[x][_y]);
+            line.push_back(board.array[_x][y]);
         }
-        correctSum = checkLine(line);
+        if (checkLine(line))
+        {
+            correctSum = true;
+        }
+        else
+        {
+            correctSum = checkLine(line);
+            break;
+        }
     }
+
+    // horizontal
+    for (int i = 0; i < y; i++)
+    {
+            line.clear();
+        if (correctSum)
+        {
+            for (int _y = 0; _y <= y; _y++)
+            {
+                line.push_back(board.array[x][_y]);
+            }
+            correctSum = checkLine(line);
+            if (checkLine(line))
+            {
+                correctSum = true;
+            }
+            else
+            {
+                correctSum = checkLine(line);
+                break;
+            }
+        }
+    }
+    
     // diagonal
-   // todo: optimise 
-    if (correctSum && (currentIndex ==5 || currentIndex == 10 || currentIndex
-     == 15 ))
+    // todo: optimise
+    if (correctSum && (currentIndex == 5 || currentIndex == 10 || currentIndex == 15))
     {
         line.clear();
-        for (int i = 0; i <= (int) currentIndex/N; i++)
+        for (int i = 0; i <= (int)currentIndex / N; i++)
         {
             line.push_back(board.array[i][i]);
         }
         correctSum = checkLine(line);
     }
-    
-    if (correctSum && (currentIndex ==6 || currentIndex == 9 || currentIndex
-     == 12 ))
+
+    if (correctSum && (currentIndex == 6 || currentIndex == 9 || currentIndex == 12))
     {
         line.clear();
-        for (int i = 0; i <= (int) currentIndex/N; i++)
+        for (int i = 0; i <= (int)currentIndex / N; i++)
         {
             line.push_back(board.array[i][i]);
         }
@@ -131,8 +172,6 @@ bool checkBoard(Board board, int currentIndex)
     }
 
     return correctSum;
-
-    
 }
 
 void swap(int x1, int y1, int x2, int y2, Board &board)
@@ -151,33 +190,39 @@ pair<int, int> translateIndexToCord(int index)
 
 }
 */
+int counter = 0;
 
 void printAllPermutations(Board board, int startingIndex, int endIndex)
 {
-    if (startingIndex == endIndex)
+
+    if (checkBoard(board, startingIndex) || startingIndex == 0)
     {
-        display(board);
-        cout << "-----------" << endl;
-    }
-    else
-    {
-        for (int i = startingIndex; i <= endIndex; i++)
+        if (startingIndex == endIndex)
         {
-            swap(startingIndex % N, (int)startingIndex / N,
-                 i % N, (int)i / N, board);
 
-            printAllPermutations(board, startingIndex +1, endIndex);
-            
-            swap(i % N, (int)i / N,
-                 startingIndex % N, (int)startingIndex / N, board);
+            //            display(board);
+            //           cout << "-----------" << endl;
+            counter++;
+        }
+        else
+        {
+            for (int i = startingIndex; i <= endIndex; i++)
+            {
+                swap(startingIndex % N, (int)startingIndex / N,
+                     i % N, (int)i / N, board);
 
+                printAllPermutations(board, startingIndex + 1, endIndex);
+
+                swap(i % N, (int)i / N,
+                     startingIndex % N, (int)startingIndex / N, board);
+            }
         }
     }
 }
 
 int main()
 
-{ 
+{
     /*
     display(startingPosition);
 
@@ -185,39 +230,47 @@ int main()
     cout << "Permutations" << endl;
     printAllPermutations(startingPosition, 0, N * N - 1);
 
-*/
-    cout << "\n\n\nTESTS"; 
     /*
     for (int i = 0; i <= N*N -1; i++){
         cout << startingPosition.array[i%N][(int) i / N] << " , ";
     }
     */
+    /*
+        cout << "\n\n\nTESTS";
+        cout << endl;
+        vector<int> numbers = {34};
+        cout << !checkLine(numbers) << endl;
+        numbers = {35};
 
-    cout << endl;
-    vector<int> numbers = {34};
-    cout << checkLine(numbers) << endl;
-    numbers = {35};
+        cout << !checkLine(numbers) << endl;
 
-    cout << checkLine(numbers) << endl;
+        numbers = {32};
 
-    numbers = {32};
+        cout << checkLine(numbers) << endl;
 
-    cout << checkLine(numbers) << endl;
-    
-    numbers = {1,2};
-    cout << checkLine(numbers) << endl;
-    
-    numbers = {4,30};
-    cout << checkLine(numbers) << endl;
+        numbers = {1, 2};
+        cout << checkLine(numbers) << endl;
+
+        numbers = {4, 30};
+        cout << !checkLine(numbers) << endl;
+
+        Board correctBoard = generateCorrectBoard();
+cout << checkBoard(correctBoard, 11) << endl;
+*/
 
 
-    Board correctBoard = generateCorrectBoard();
-    
-    cout << checkBoard(correctBoard, 11) << endl; 
-    
-    cout << checkBoard(generateStartingPosition() , 15) << endl;
+ int array[N][N] = {
+            7, 3, 11,
+            12, 10, 9, 
+            15, 1, 13, 
+            14, 2, 5, 
+            4, 8, 6, 16,
+    };
+    Board board = generateboard(array);
+
+    cout << checkBoard(board, 15) << endl;
+    // vector<int> line ={ 10 , 9 , 15 , 1} ;
+    // cout << checkLine(line) << endl;
 
     return 0;
 }
-
-
