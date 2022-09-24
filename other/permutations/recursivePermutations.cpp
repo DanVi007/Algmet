@@ -22,11 +22,13 @@ void displayVector(vector<int> vector){
         cout << endl;
 
 }
+int counter = 0;
 void findPermutations(vector<int> numbers, int startingIndex, int endIndex)
 {
     if (startingIndex == endIndex)
     {
         displayVector(numbers);
+        counter++;
     }
     else
     {
@@ -44,6 +46,7 @@ int main()
 {
 
     findPermutations(gNumbers,0,gNumbers.size()-1);
+    cout << counter << endl; 
 
     return 0;
 }
