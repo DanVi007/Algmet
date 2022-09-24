@@ -87,7 +87,7 @@ bool checkLine(vector<int> line)
         {
             return true;
         }
-        if (counter >= maxNumber)
+        if (counter >= maxNumber )
         {
             return false;
         }
@@ -107,48 +107,25 @@ bool checkBoard(Board board, int currentIndex)
 
     bool correctSum = false;
     vector<int> line;
+
+    // horizontal
+    for (int _y = 0; _y <= y; _y++)
+    {
+        line.push_back(board.array[x][_y]);
+    }
+    correctSum = checkLine(line);
+
     // vertical
-    for (int i = 0; i < x; i++)
+    if (correctSum)
     {
         line.clear();
         for (int _x = 0; _x <= x; _x++)
         {
             line.push_back(board.array[_x][y]);
         }
-        if (checkLine(line))
-        {
-            correctSum = true;
-        }
-        else
-        {
-            correctSum = checkLine(line);
-            break;
-        }
+        correctSum = checkLine(line);
     }
 
-    // horizontal
-    for (int i = 0; i < y; i++)
-    {
-            line.clear();
-        if (correctSum)
-        {
-            for (int _y = 0; _y <= y; _y++)
-            {
-                line.push_back(board.array[x][_y]);
-            }
-            correctSum = checkLine(line);
-            if (checkLine(line))
-            {
-                correctSum = true;
-            }
-            else
-            {
-                correctSum = checkLine(line);
-                break;
-            }
-        }
-    }
-    
     // diagonal
     // todo: optimise
     if (correctSum && (currentIndex == 5 || currentIndex == 10 || currentIndex == 15))
@@ -200,21 +177,23 @@ void printAllPermutations(Board board, int startingIndex, int endIndex)
         if (startingIndex == endIndex)
         {
 
-            //            display(board);
-            //           cout << "-----------" << endl;
+                       display(board);
+                      cout << "-----------" << endl;
             counter++;
         }
         else
         {
             for (int i = startingIndex; i <= endIndex; i++)
             {
-                swap(startingIndex % N, (int)startingIndex / N,
+                int x = startingIndex % N;
+                int y = (int)startingIndex / N;
+                swap(x, y,
                      i % N, (int)i / N, board);
 
                 printAllPermutations(board, startingIndex + 1, endIndex);
 
                 swap(i % N, (int)i / N,
-                     startingIndex % N, (int)startingIndex / N, board);
+                     x, y, board);
             }
         }
     }
@@ -223,18 +202,19 @@ void printAllPermutations(Board board, int startingIndex, int endIndex)
 int main()
 
 {
-    /*
+    
     display(startingPosition);
 
     cout << "----------------" << endl;
     cout << "Permutations" << endl;
     printAllPermutations(startingPosition, 0, N * N - 1);
 
-    /*
+cout << counter <<endl; 
+    
     for (int i = 0; i <= N*N -1; i++){
         cout << startingPosition.array[i%N][(int) i / N] << " , ";
     }
-    */
+    
     /*
         cout << "\n\n\nTESTS";
         cout << endl;
@@ -257,20 +237,35 @@ int main()
         Board correctBoard = generateCorrectBoard();
 cout << checkBoard(correctBoard, 11) << endl;
 */
+/*
 
-
- int array[N][N] = {
-            7, 3, 11,
-            12, 10, 9, 
-            15, 1, 13, 
-            14, 2, 5, 
-            4, 8, 6, 16,
+    int array[N][N] = {
+        7,
+        3,
+        11,
+        12,
+        10,
+        9,
+        15,
+        1,
+        13,
+        14,
+        2,
+        5,
+        4,
+        8,
+        6,
+        16,
     };
+
     Board board = generateboard(array);
+    display(board);
 
-    cout << checkBoard(board, 15) << endl;
-    // vector<int> line ={ 10 , 9 , 15 , 1} ;
-    // cout << checkLine(line) << endl;
+//     vector<int> line ={ 10 , 9 , 14 } ;
+//     cout << checkLine(line) << endl;
 
+cout << checkBoard(board,12)  << endl;
+
+*/
     return 0;
 }
