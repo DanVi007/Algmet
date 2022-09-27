@@ -14,5 +14,7 @@ without a class
 //https://stackoverflow.com/questions/7600346/what-is-a-nonstatic-member-function
 int main(){
     printAnumber(7);
+
+    int numbers [][];
     return 0;
 }
