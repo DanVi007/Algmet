@@ -31,6 +31,7 @@ int main() {
 
     for (int i = 0; i < N; i++)      //  Fyller array med: 1, 2, 3, ..., N
         array[i] = i+1;
+        display(array,N);
 
     permuter(array, 0, N);           //  Lager (og skriver) permutasjoner av
                                      //    ALLE arrayelementene.
@@ -80,24 +81,21 @@ void display(const int arr[], const int n) {
  *  @see     roterVenstre(...)
  */
 void permuter(int arr[], const int i, const int n) {
-    if (i == n-1)                       //  Nådd en ny permutasjon:
+    if (i == n-1){                      //  Nådd en ny permutasjon:
         //display(arr, n);                //  Skriver ut arrayens innhold.
-        cout <<""; 
-    else {                              //  Skal permutere:
+        cout << " ";
+}   else {                              //  Skal permutere:
         permuter(arr, i+1, n);          //  Beholder nåværende nr.'i'.
-        cout << i << endl;                               //    Permuterer resten.
-        cout << "first" ;
-        display(arr,N);  
         for (int t = i+1;  t < n;  t++) {
             bytt(arr[i], arr[t]);       //  Bytter nr.'i' etter tur med
-                                        //    ALLE de andre etterfølgende.
             permuter(arr, i+1, n);      //  For hver av ombyttene: permuterer
-            cout << "second" ;
-            display(arr,N);  
         }                               //     resten av de etterfølgende.
+        cout << "For rotering ";
+        display(arr,n);
         roterVenstre(arr, i, n);        //  Gjenoppretter opprinnelig array!!!
-        cout << "third" ;
-        display(arr,N);  
+        cout << "Etter rotering ";
+        display(arr,n);
+        cout << endl;
     }
 }
 
