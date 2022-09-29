@@ -15,6 +15,5 @@ without a class
 int main(){
     printAnumber(7);
 
-    int numbers [][];
     return 0;
 }
