@@ -82,20 +82,20 @@ void display(const int arr[], const int n) {
  */
 void permuter(int arr[], const int i, const int n) {
     if (i == n-1){                      //  Nådd en ny permutasjon:
-        //display(arr, n);                //  Skriver ut arrayens innhold.
-        cout << " ";
+        display(arr, n);                //  Skriver ut arrayens innhold.
+       // cout << " ";
 }   else {                              //  Skal permutere:
         permuter(arr, i+1, n);          //  Beholder nåværende nr.'i'.
         for (int t = i+1;  t < n;  t++) {
             bytt(arr[i], arr[t]);       //  Bytter nr.'i' etter tur med
             permuter(arr, i+1, n);      //  For hver av ombyttene: permuterer
         }                               //     resten av de etterfølgende.
-        cout << "For rotering ";
-        display(arr,n);
+       // cout << "For rotering ";
+       // display(arr,n);
         roterVenstre(arr, i, n);        //  Gjenoppretter opprinnelig array!!!
-        cout << "Etter rotering ";
-        display(arr,n);
-        cout << endl;
+      //  cout << "Etter rotering ";
+      //  display(arr,n);
+       // cout << endl;
     }
 }
 
