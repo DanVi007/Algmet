@@ -2,8 +2,9 @@
 
 using namespace std;
 
-const int N = 3;
+const int N = 4;
 int row[N];
+int counter = 0;
 
 void buildRow()
 {
@@ -21,27 +22,65 @@ void display(const int row[])
     }
     cout << endl;
 }
-
+/*
 void swap(int row[], int i, int j)
 {
     int temp = row[i];
     row[i] = row[j];
     row[j] = temp;
 }
+*/
+void change(int &i, int &j)
+{
+    int temp = i;
+    i = j;
+    j = temp;
+}
+/*
+bool checkNumber(int row[] , int indexToCheck){
+    if(row[indexToCheck] +1 == row[indexToCheck +1 ] ||
+    row[indexToCheck] -1 == row[indexToCheck +1] ||
+      row[indexToCheck] +1 == row[indexToCheck -1] ||
+        row[indexToCheck] -1 == row[indexToCheck -1] ){
+            return false;
+        }
+   return true;
+}
+*/
+bool checkNumber(int row[], int start, int indexToCheck)
+{
+    if (
+        row[indexToCheck] + 1 == row[start - 1] ||
+        row[indexToCheck] - 1 == row[start - 1]
+        )
+    {
+        return false;
+    }
+    if(start == N-2 &&
+        abs((int)row[indexToCheck] -(int) row[start]) <= 1 ){
+            return false; 
+        
+    }
+    return true;
+}
 
 void permutateClass(int row[], int start, int last)
 {
-    if (start == last )
+    if (start == last)
     {
         display(row);
+        counter++;
     }
     else
     {
-        for (int i = start; start <= last; i++)
+        for (int i = start; i <= last; i++)
         {
-            swap(row, start, i);
-            permutateClass(row, start + 1, last);
-            swap(row ,i, start);
+            if (checkNumber(row, start, i))
+            {
+                change(row[start], row[i]);
+                permutateClass(row, start + 1, last);
+                change(row[i], row[start]);
+            }
         }
     }
 }
@@ -49,11 +88,12 @@ void permutateClass(int row[], int start, int last)
 int main()
 {
     buildRow();
-    display(row);
-    swap(row, 1,2);
-    swap(row, 2,1);
-    display(row);
-    cout << endl;
-    //permutateClass(row, 0, N -1);
+    // display(row);
+    // change(row[0], row[1]);
+    // display(row);
+    counter = 0; 
+    permutateClass(row, 0, N - 1);
+    
+    cout << counter << endl;
     return 0;
 }
