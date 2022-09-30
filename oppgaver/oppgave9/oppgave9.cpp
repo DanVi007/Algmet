@@ -12,7 +12,20 @@ void buildRow(){
     }
 }
 
-void permutateClass(){
+void display(const int row[]){
+    for(int i = 0 ; i < sizeof(row)/sizeof(int); i++){
+        cout <<  row[i] << " ";
+    }
+    cout << endl; 
+}
+
+void permutateClass(int row[] , int indexToChange, int lastIndex){
+   if(indexToChange == lastIndex -1){
+    display(row); 
+   } else {
+    
+
+   } 
 
 }
 

@@ -40,6 +40,7 @@ int main() {
                               //    (for å vise at original er gjenopprettet).
 
     cout << "\n\n";
+
     return 0;
 }
 
