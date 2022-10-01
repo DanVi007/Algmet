@@ -1,0 +1,21 @@
+oppgave 10
+a)insertion sort er raskest for en ferdig sortert array siden selection sort. 
+må gå gjennom hele arrayen for hvert eneste element i arrayen. 
+insertion sort vil derimot kun gå gjennom arrayen en gang og siden den 
+er ferdig sortert vil den ikke gjøre noen bytter heller.
+b)
+selection sort vil være raskest her siden, insertion sort må gjøre 
+maksimalt antall bytter, den må gå gjennom arrayen mindre ganger enn 
+selection sort, men siden den må gjøre bytter hele veien vil den være 
+tregere. 
+c)
+insertion er stabil siden den første som blir funnet blir sendt "bakerst" 
+først, samme verdier som kommer etterpå vil dermed være etter den første
+verdien. 
+Shell sort er ikke stabil:
+eks: 
+
+{1,1,1,0,1,1,1,1,1}
+det første steget vil bytte 0 med den første "1" denne "1"-eren skal egt 
+komme først men nå er den blandet. 
+
