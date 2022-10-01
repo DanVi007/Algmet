@@ -2,7 +2,8 @@
 
 using namespace std;
 
-const int N = 4;
+const int N = 9;
+
 int row[N];
 int counter = 0;
 
@@ -47,6 +48,7 @@ bool checkNumber(int row[] , int indexToCheck){
    return true;
 }
 */
+/*
 bool checkNumber(int row[], int start, int indexToCheck)
 {
     if (
@@ -58,29 +60,40 @@ bool checkNumber(int row[], int start, int indexToCheck)
     }
     if(start == N-2 &&
         abs((int)row[indexToCheck] -(int) row[start]) <= 1 ){
-            return false; 
-        
+            return false;
+
+    }
+    return true;
+}
+*/
+bool checkNumber(int row[], int indexToCheck)
+{
+    if (indexToCheck <= 0)
+    {
+        return true;
+    }
+    else if (abs((int)row[indexToCheck] - (int)row[indexToCheck - 1]) <= 1)
+    {
+        return false;
     }
     return true;
 }
 
 void permutateClass(int row[], int start, int last)
 {
-    if (start == last)
+
+    if (start == last && checkNumber(row, start -1) && checkNumber(row, start))
     {
         display(row);
         counter++;
     }
-    else
+    else if (start == 0 || checkNumber(row, start-1))
     {
         for (int i = start; i <= last; i++)
         {
-            if (checkNumber(row, start, i))
-            {
-                change(row[start], row[i]);
-                permutateClass(row, start + 1, last);
-                change(row[i], row[start]);
-            }
+            change(row[start], row[i]);
+            permutateClass(row, start + 1, last);
+            change(row[i], row[start]);
         }
     }
 }
@@ -90,10 +103,13 @@ int main()
     buildRow();
     // display(row);
     // change(row[0], row[1]);
-    // display(row);
-    counter = 0; 
+    display(row);
+    cout << endl;
+    counter = 0;
     permutateClass(row, 0, N - 1);
-    
-    cout << counter << endl;
+    //    cout << N-1<< endl ;
+    //    cout << checkNumber(row, 3) << endl;
+
+        cout << counter << endl;
     return 0;
 }
