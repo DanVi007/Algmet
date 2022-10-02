@@ -41,16 +41,16 @@ void skriv(const string & tekst, const char arr[],
            const int i, const int j, const int h, const char verdi);
 
 template <typename T>
-void checkShellSort(T arr[]) {
+void checkShellSort(T arr[],int n) {
      cout << "\n\nArrayen FØR sortering:\n\t";
-    display(arr, N+1);           //  Skriver array FØR sortering.
+    display(arr, n);           //  Skriver array FØR sortering.
 
 
-    shellSort(arr, N+1);         //  SHELLSORT SORTERER !!!
+    shellSort(arr, n);         //  SHELLSORT SORTERER !!!
 
 
     cout << "\n\nArrayen ETTER SHELLSORT sortering:\n\t";
-    display(arr, N+1);           //  Skriver array ETTER sortering.
+    display(arr, n);           //  Skriver array ETTER sortering.
 
     cout << "\n\n";
 
@@ -69,8 +69,14 @@ int main() {
     array[0] = ' ';                //  Legger inn SENTINEL KEY !!!
 
     strcat(array, "SUMPSVAMP");
-    checkShellSort(array);
+    checkShellSort(array,N+1 );
+
+    char text[11];
+    text[0] = ' ';
+
+    strcat(text, "KARKINAGRI");
     
+    checkShellSort(text , 11);
 
     return 0;
 }
