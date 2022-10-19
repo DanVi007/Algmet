@@ -106,11 +106,11 @@ void finnMST(int nr) {
    if (gFringe.update(nr, -USETT))  gTilknytning[nr] = 0;
 
    while (!gFringe.empty())  {  //  Fortsatt ubehandlede (på "Fringen"):
-                                 // cout << "\n\nOPPSTART:";      skriv();
+                                  cout << "\n\nOPPSTART:";      skriv();
        nr = gFringe.remove();   //  Henter den først på fringen.
        gKantVekt[nr] = -gKantVekt[nr];  //  Omgjør neg. til pos.verdi.
-                                  //cout << "\nNr.1 (" << char ('A'+nr-1)
-                                   //    << ") fjernet:";         skriv();
+                                  cout << "\nNr.1 (" << char ('A'+nr-1)
+                                       << ") fjernet:";         skriv();
                                   //  Den hentede er noden uten tilknytning:
        if (gKantVekt[nr] == -USETT)  gKantVekt[nr] = 0;
 
@@ -119,10 +119,10 @@ void finnMST(int nr) {
             if (vekt > 0  &&                     //  Er naboer  og  er på
                 gKantVekt[j] < 0)  {             //    Fringen eller USETT
                                                  //    (negativ 'gKantVekt'):
-                if (gFringe.update(j, vekt))  {  //  Ny eller lavere kantvekt:
+                if (gFringe.update(j, vekt) ) {  //  Ny eller lavere kantvekt:
                    gKantVekt[j]    = -vekt;      //    Oppdaterer med ny vekt
                    gTilknytning[j] =  nr;        //    og ny tilknytning.
-                                  //cout << "\nOppdatering:";     skriv();
+                                  cout << "\nOppdatering:";     skriv();
                }
             }
        }
@@ -146,5 +146,4 @@ void skriv()  {
   for (int i = 1;  i <= ANTNODER;  i++)   //  Tilknyttet node ('dad').
       cout << setw(6) << ((gTilknytning[i] > 0) ?
                            char('A'+gTilknytning[i]-1) : '0');
-  char ch;  cin >> ch;                    //  Venter på ett tegn og '\n'.
-}
+  char ch;  cin >> ch;                    //  Venter på ett tegn og '\n
