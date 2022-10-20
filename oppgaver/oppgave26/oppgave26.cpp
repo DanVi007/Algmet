@@ -3,6 +3,8 @@ using namespace std;
 
 const int N = 10;
 
+int solutionCounter = 0 ;
+
 int gNeighbour[N][N] = { 
  // Node nr: 0  1  2  3  4  5  6  7  8  9 Node nr:
            { 0, 1, 1, 0, 0, 0, 0, 1, 1, 0 }, // 0
@@ -62,11 +64,14 @@ void rotateLeft(int arr[], const int i , const int n){
 }
 
 void display(){
+    solutionCounter++;
+    cout << "solution " << solutionCounter<< endl;
     int index = 0;
     for(int i : nodeArray){
-        cout << "reference number: " << index << " , id: " << i << endl;
+        cout << "ref: " << index << " , id: " << i << endl;
         index++;
     }
+    cout << "\n"; 
 }
 
 
@@ -89,7 +94,7 @@ void permutateSolutions(int arr[],const int i, const int n) {
 
 int main(int argc, char const *argv[])
 {
-    cout << "hello" << endl;
+    cout << "All solutions: " << endl; 
     permutateSolutions(nodeArray, 0,N);
     return 0;
 }
