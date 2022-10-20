@@ -20,12 +20,26 @@ int gNeighbour[N][N] = {
 int requirement[N]= {21,33,14,27,1,14,20,12,28,20} ;
 int nodeArray[N] = {0,1,2,3,4,5,6,7,8,9}; // index is id, value is reference  
 
+int getIndex(int reference){
+    int index = 0; 
+    for(int i : nodeArray) {
+        if(i == reference){
+            return index; 
+        }
+        index++;
+    }
+
+return -1;
+}
+
 bool requirementMet(){
    int index = 0 ; 
     for(int i :nodeArray){
         int sumOfNeighbours = 0; 
         for(int j = 0; j < N; j++) {
-            sumOfNeighbours += gNeighbour[i][j];
+            if(gNeighbour[i][j]){
+                sumOfNeighbours += getIndex(j);
+            }
         }
         if(sumOfNeighbours != requirement[index]){
             return false;
@@ -52,7 +66,7 @@ void rotateLeft(int arr[], const int i , const int n){
 void display(){
     int index = 0;
     for(int i : nodeArray){
-        cout << "reference number: " << i << " , id: " << index;
+        cout << "reference number: " << i << " , id: " << index << endl;
         index++;
     }
 }
@@ -70,4 +84,11 @@ void permutateSolutions(int arr[],const int i, const int n) {
         rotateLeft(arr,i,n);
     }
 
+}
+
+int main(int argc, char const *argv[])
+{
+    cout << "hello" << endl;
+    permutateSolutions(nodeArray, 0,N);
+    return 0;
 }
