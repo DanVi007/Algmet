@@ -17,8 +17,8 @@ int gNeighbour[N][N] = {
            { 0, 0, 0, 0, 1, 0, 1, 1, 1, 0 } }; // 9
 
 
-int requirement[N]= {21,33,14,27,1,14,20,12,28,20} ;
-int nodeArray[N] = {0,1,2,3,4,5,6,7,8,9}; // index is id, value is reference  
+int requirement[N]= {21,33,14,27,1,14,20,12,28,20} ; // index is id
+int nodeArray[N] = {0,1,2,3,4,5,6,7,8,9}; // index is reference , value is id  
 
 int getIndex(int reference){
     int index = 0; 
@@ -33,18 +33,16 @@ return -1;
 }
 
 bool requirementMet(){
-   int index = 0 ; 
-    for(int i :nodeArray){
+    for(int i = 0; i < N; i++){
         int sumOfNeighbours = 0; 
         for(int j = 0; j < N; j++) {
-            if(gNeighbour[i][j]){
-                sumOfNeighbours += getIndex(j);
+            if(gNeighbour[i][j] != 0){
+                sumOfNeighbours += nodeArray[j];
             }
         }
-        if(sumOfNeighbours != requirement[index]){
+        if(sumOfNeighbours != requirement[nodeArray[i]]){
             return false;
         } 
-        index++;
     }
     return true;
 }
@@ -66,15 +64,18 @@ void rotateLeft(int arr[], const int i , const int n){
 void display(){
     int index = 0;
     for(int i : nodeArray){
-        cout << "reference number: " << i << " , id: " << index << endl;
+        cout << "reference number: " << index << " , id: " << i << endl;
         index++;
     }
 }
 
 
 void permutateSolutions(int arr[],const int i, const int n) {
-    if(i == n-1 && requirementMet()){
-        display();
+    //if(i == n-1 && requirementMet()){
+    if(i == n-1 ){
+        if(requirementMet()){
+            display();
+        }
     } else {
         permutateSolutions(arr, i +1, n); 
         for(int t = i +1;t < n;t++ ){
