@@ -1,12 +1,17 @@
 #include <iostream>          //  cout
-#include <queue>             //  queue
-#include <vector>            //  vector
 using namespace std;
-
 struct Node{
     char ID;
     Node *left, *right; 
+    Node(const char id, Node * l , Node *r){
+      ID= id; 
+      left = l;
+      right = r;
+    }
 }; 
+
+// https://cplusplus.com/forum/beginner/4639/
+typedef Node* (*AlleByggeFunksjoner)();
 
 Node* gRoot = nullptr;
 bool gKomplettTre = true,
@@ -14,423 +19,6 @@ bool gKomplettTre = true,
 int gDybde = 0 , // gDybde blir nivaa til den første noden som blir funnet 
     gNivaa = -1;
 
-// ser etter blad noder på en preorder måte 
-/**
- * koden ser etter en blad node, går dermed å leter etter flere bladnoder og sammenligner 
- * verdien til nyfunnet bladnodene med verdien til den første bladnoden.
- */
-
-/*
-void erKomplettTre(Node* node) {
-    if(node && gKomplettTre){ //Er det en reell node og er treet fortsatt komplett 
-      gNivaa++;
-        if(!node->left && !node->right){ // er det en blad node 
-            if( !gNivaaOpp){ // er blad noden den første som ble funnet 
-                gDybde = gNivaa;
-                gNivaaOpp = true;
-            } else if(abs(gNivaa - gDybde) > 1){// er forskjellen på denne bladnoden sitt nivå 
-                                                // og første mer enn 1 
-                gKomplettTre = false; // hvis ja da er treet ikke et komplett tre
-               return; // returnerer dermed void, nedre linjer kjøres ikke  
-            }
-        }
-        if((!node->left || !node->right) && abs(gNivaa - gDybde) > 1 ){
-          gKomplettTre = false;
-          return; 
-
-        }
-        erKomplettTre(node->left);// gjør det samme for ventre og høyre  
-        erKomplettTre(node->right); 
-        gNivaa--;
-
-    }
-}
-*/
-
-// ser etter enebarn på en preorder måte 
-/**
-    
- * koden ser etter et enebarn node, går dermed å leter etter flere enebarn  og sammenligner 
- * verdien til nyfunnet enebarn med verdien til den første enebarn .
- * enebarn er noder med ingen søsken dvs. forelderen til enebarnet har kun et barn. 
- */
-/*
-void erKomplettTre(Node* node) {
-    gNivaa++;
-    if(node && gKomplettTre){ //Er det en reell node og er treet fortsatt komplett 
-      if(!node-> left || !node->right ){ // det er et enebarn  
-        if(!gNivaaOpp){ //  er det det første enebarnet funnet 
-          gDybde = gNivaa;
-          gNivaaOpp = true; 
-        } else if(abs(gNivaa - gDybde) > 1){ // det er ikke det første enebarnet funnet og nivaaet funnet her er mer eller mindre enn 1 enn det første 
-          gKomplettTre = false; 
-          return; 
-        }
-      }
-        erKomplettTre(node->left);// gjør det samme for ventre og høyre  
-        erKomplettTre(node->right); 
-    }
-    gNivaa--;
-}
-*/
-
-// ser etter enebarn på en preorder måte 
-/**
-    
- * koden ser etter et enebarn node, går dermed å leter etter flere enebarn  og sammenligner 
- * verdien til nyfunnet enebarn med verdien til den første enebarn .
- * enebarn er noder med ingen søsken dvs. forelderen til enebarnet har kun et barn. 
- */
-/*
-void erKomplettTre(Node* node) {
-    gNivaa++;
-    if(node && gKomplettTre){ //Er det en reell node og er treet fortsatt komplett 
-       if(gNivaaOpp && abs(gNivaa - gDybde) > 1 ) {
-        gKomplettTre = false;
-        return; 
-       }
-
-      if((!node->right || !node->left) && gNivaaOpp && gDybde != gNivaa){
-          gKomplettTre = false;
-          return; 
-      }
-       
-      if(!node->left ){
-        if(!gNivaaOpp){
-          gNivaaOpp = true;
-          gDybde = gNivaa; 
-          return;
-        } else if(gDybde != gNivaa){
-          gKomplettTre = false;
-          return; 
-        }  
-      }
-      
-      erKomplettTre(node->left);
-      erKomplettTre(node->right);
-
-    }
-    gNivaa--;
-}
-
-*/
-
-/*
-void erKomplettTre(Node * node ){
-  gNivaa++; 
-  if(node && gKomplettTre){
-    if(!gNivaaOpp){
-      if(!node->left){
-        gNivaaOpp = true;
-        gDybde = gNivaa;
-      }
-    } else {
-      if((gNivaa != gDybde && !node->right) || abs(gNivaa - gDybde) > 1 ){
-        gKomplettTre = false;
-        return;
-      } else {
-        gNivaaOpp = false;
-      }
-      
-
-    }
-    erKomplettTre(node->left);
-    erKomplettTre(node->right);
-
-  }
-  gNivaa--;
-}
-*/
-/*
-
-void erKomplettTre(Node * node){
-  if(node && gKomplettTre){// rell 
-    if((node->right && !node->left)
-        || (gNivaa))
-    
-    ){
-
-      gKomplettTre = false;
-      return;
-    }
-    if(!gNivaaOpp){ // den har ikke gått opp et nivå 
-      if(!node->left){ // den lengste til venstre er funnet 
-        gNivaaOpp = true; // maks venstre er funnet
-        gDybde = gNivaa; 
-      }
-    } else  {
-      if(gNivaa > gDybde) {
-        gKomplettTre = false;
-        return;
-      }
-
-      if(gDybde -gNivaa > 2 && !(node->left && node->right)){
-       gKomplettTre = false;
-       return; 
-      } 
-    }
-    erKomplettTre(node->left);
-    erKomplettTre(node->right);
-
-  }
-
-  
-}
-*/
-
-void erKomplettTre2(Node * node) {
-  gNivaa++;
-  if(node && gKomplettTre) {
-    if((node -> right && !node->left)
-    || (gNivaaOpp && gNivaa > gDybde )
-    || (gNivaaOpp && gDybde - gNivaa > 1 && (!node->left || !node->right))
-    ){
-      gKomplettTre = false;
-      return;
-    }
-    if(!gNivaaOpp){
-      if(!node -> left){
-        gNivaaOpp = true;
-        gDybde = gNivaa;
-      }
-    } else {
-
-    }
-  }
-  gNivaa--;
-}
-
-void erKomplettTre3(Node * node){
-  gNivaa++;
-  if(node && gKomplettTre) {
-  if((node -> right && !node->left)
-  || (gNivaaOpp && gNivaa > gDybde )
-  || (gNivaaOpp && gDybde - gNivaa > 1 && (!node->left || !node->right))
-  ){
-  gKomplettTre = false;
-  return;
-  }
-  if(!gNivaaOpp){
-  erKomplettTre3(node->left);
-  if(!node -> left){
-    gNivaaOpp = true;
-    gDybde = gNivaa;
-    return;
-  }
-  } else {
-  if(gDybde - gNivaa == 1){
-    if(node->right);
-    erKomplettTre3(node->left);
-    erKomplettTre3(node->right);
-
-      }
-
-    }
-  }
-  gNivaa--;
-}
-
-void erKomplettTre4(Node * node){
-  gNivaa++;
-  if(node && gKomplettTre){
-    if((node -> right && !node->left)
-    || (gNivaaOpp && gNivaa > gDybde )
-    || (gNivaaOpp && gDybde - gNivaa > 1 && (!node->left || !node->right)) // maks dybde er funnet og nivået over har ikke maks barn
-    ){
-      gKomplettTre = false;
-      return;
-    }
-    if(!gNivaaOpp){ // maks dybde ikke funnet 
-      if(node->left){
-        if(!node->left->left && !node->left->right){
-          gNivaaOpp = true; 
-          gDybde = gNivaa +1 ;
-        }
-      }
-      if(!node->left && !node->right){// første blad node funnet fra høyre side 
-        gNivaaOpp = true;
-        gDybde =gNivaa;
-      }
-
-    }
-   }
-   erKomplettTre4(node->right);
-   erKomplettTre4(node->left); 
-  gNivaa--;
-}
-
-void erKomplettTre5(Node * node){
-  gNivaa++;
-  if(node && gKomplettTre){
-    if((node -> right && !node->left)
-        ||(gNivaaOpp && gNivaa > gDybde) 
-    ){
-      gKomplettTre = false;
-      return;
-    }
-    if(!gNivaaOpp){
-      if(!node->left && !node->right){
-        gNivaaOpp = true;
-        gDybde = gNivaa;
-      } else if(!node->right){
-        gNivaaOpp = true;
-        gDybde = gNivaa+1;
-      }
-    } else {
-      
-
-    }
-
-  }
-  gNivaa--;
-
-}
-/*
-void erKomplettTre6(Node * node){
-  gNivaa++; 
-  if(node && gKomplettTre){
-    int depeestLevel = 0; 
-    bool deepsestFound = false;
-    Node * nodePointer = node; 
-    int level = gNivaa;
-    while( !deepsestFound ){
-      if(!node->left && !node->right && level > depeestLevel) {
-        depeestLevel = level;
-      }
-
-    }
-    
-
-    
-  }
-}
-*/
-// gKogg
-
-//Node* gRoot = nullptr;
-//bool gKomplettTre = true,
-//    gNivaaOpp = false ; 
-//int gDybde = 0 ,
-//    gNivaa = -1;
-void erKomplettTre7(Node * node){
-  gNivaa++;
-  if(node && gKomplettTre) {
-    if(!gNivaaOpp){
-      if(node->left && node->right){
-        Node * nodePtr = node;
-        
-        if(node->left->left){
-          if(!node->left && !node->right){
-
-          }
-
-        }
-      }
-
-    }
-
-
-  }
-  gNivaa--;
-
-
-
-}
-
-void erKomplettTre8(Node * node){
-  gNivaa++;
-  if(node&& gKomplettTre){
-    if(!node->left && node->right ) // ikke default cases for et komplett tre 
-    {
-      gKomplettTre = false;
-      return;
-    }
-    if(gNivaaOpp){
-      if(gNivaa > gDybde 
-      || (gNivaa == gDybde && !node->left && !node->right)
-      || (gNivaa < gDybde && !(node->left && node->right))
-      ){
-        gKomplettTre = false;
-        return;
-      }
-    }
-    erKomplettTre8(node->right); 
-    if(!gNivaaOpp && node->left && !node->right && (gDybde == 0 || gNivaa == gDybde )){
-      gDybde = gNivaa +1 ;
-      gNivaaOpp = false;
-    }
-    if(!gNivaaOpp && !node->left && !node->right){// er det en blad node 
-     gDybde = gNivaa; 
-    }
-
-    erKomplettTre8(node->left);
-
-}
-gNivaa--;
-
-}
-
-// copy of komplee9 
-/*
-void erKomplett9{
-  gNivaa++;
-  if(node && gKomplettTre){
-    if(!node->left && node->right // ikke default cases for et komplett tre  
-      || (gDybde != 0  && gNivaa - gDybde > 1 ) 
-      || (gNivaaOpp && gNivaa > gDybde)
-      || (gDybde != 0 && gDybde - gNivaa >= 1 && !(node->left && node->right))
-    ) 
-    {
-      gKomplettTre = false;
-      return;
-    }
-    erKomplett9(node->right);
-    if(gDybde == 0 && !node->left && !node->right) { // maks dybde er ikke satt 
-      gDybde = gNivaa;
-    }
-
-    if(gDybde != 0 && gNivaa -gDybde == 1 && !node->left && !node->right) {
-      gDybde = gNivaa;
-      gNivaaOpp = true; 
-    } else if(gDybde == 0 && !node->left && !node->right){
-      gDybde = gNivaa; 
-      gNivaaOpp = true;
-    }
-
-    erKomplett9(node->left);
-  }
-  gNivaa--;
-}
-*/
-void erKomplett9(Node * node){
-  gNivaa++;
-  if(node && gKomplettTre){
-    if(!node->left && node->right // ikke default cases for et komplett tre  
-      || (!gNivaaOpp &&gDybde != 0  && gNivaa - gDybde > 1 ) 
-      || (gNivaaOpp && gNivaa > gDybde)
-      || (!gNivaaOpp &&gDybde != 0 && gDybde - gNivaa >= 1 && !(node->left && node->right))
-    ) 
-    {
-      gKomplettTre = false;
-      return;
-    }
-    erKomplett9(node->right);
-    if(gDybde == 0 && !node->left && !node->right) { // maks dybde er ikke satt 
-      gDybde = gNivaa;
-    }
-
-    if(gDybde != 0 && gNivaa -gDybde == 1 && !node->left && !node->right) {
-      gDybde = gNivaa;
-      gNivaaOpp = true; 
-    } else if(gDybde == 0 && !node->left && !node->right){
-      gDybde = gNivaa; 
-      gNivaaOpp = true;
-    }
-
-    erKomplett9(node->left);
-  }
-  gNivaa--;
-}
 
 /**
  * ide:
@@ -456,7 +44,7 @@ void erKomplett9(Node * node){
  * 6. Dersom gNivaOpp er true og det er noen noder som er større enn gDybde vil det ikke være komplett
  * 
 */
-void erKomplettTre10(Node * node){
+void erKomplettTre(Node * node){
   gNivaa++;
   if(node && gKomplettTre) {
     // caser for om det ikke er et komplett tre 
@@ -469,7 +57,7 @@ void erKomplettTre10(Node * node){
       gKomplettTre = false;
       return;
     }
-    erKomplettTre10(node->right);
+    erKomplettTre(node->right);
     if(
       (!node->right && gDybde == 0 && gNivaa == 0)// rot noden er høyreste høyre node 
       || (!gNivaaOpp && (node->left || node->right) ) // se punkt 4
@@ -479,7 +67,141 @@ void erKomplettTre10(Node * node){
     } else if(!gNivaaOpp && !node->right) { // se punkt 2 (kan kortes? gNivaaOpp trengs ikke? (samle dem?))
       gDybde = gNivaa; 
     }
-    erKomplettTre10(node->left);
+    erKomplettTre(node->left);
   }
   gNivaa--;
+}
+
+/**
+ * Printing a binary tree 
+ */
+// https://stackoverflow.com/questions/36802354/print-binary-tree-in-a-pretty-way-using-c
+void printBT(const std::string &prefix, const Node *node, bool isLeft)
+{
+    if (node != nullptr)
+    {
+        std::cout << prefix;
+        std::cout << (isLeft ? "|--" : "L--");
+        // print the value of the node
+        std::cout << (int)node->ID << std::endl;
+        // enter the next tree level - left and right branch
+        printBT(prefix + (isLeft ? "|   " : "    "), node->right, true);
+        printBT(prefix + (isLeft ? "|   " : "    "), node->left, false);
+    }
+}
+
+
+void printBT(const Node *node)
+{
+    printBT("", node, false);
+}
+
+void nullStill(){
+  gKomplettTre = true;
+  gNivaaOpp = false;
+  gDybde = 0;
+  gNivaa = -1;
+}
+
+Node* buildCase1Tree(){
+  Node *n1 = new Node(1,nullptr,nullptr);
+  return n1;
+}
+
+Node* buildCase2Tree(){
+  Node *n1 = new Node(1,nullptr,nullptr),
+       *n2 = new Node(2,nullptr,n1 );
+
+  return n2;
+}
+
+Node* buildCase3Tree(){
+  Node *n1 = new Node(1,nullptr,nullptr),
+       *n2 = new Node(2,n1,nullptr );
+
+  return n2;
+}
+
+Node* buildCase4Tree(){
+  Node *n1 = new Node(1,nullptr,nullptr),
+       *n2 = new Node(2,nullptr,nullptr ),
+       *root = new Node(3,n1,n2);
+  return root ;
+}
+
+Node* buildCase5Tree(){
+  Node *n0 = new Node(0,nullptr,nullptr), 
+        *n1 = new Node(1,n0,nullptr),
+       *n2 = new Node(2,nullptr,nullptr ),
+       *root = new Node(3,n1,n2);
+  return root ;
+}
+
+int main(int argc, char const *argv[])
+{
+  AlleByggeFunksjoner byggeFunksjoner[] = {
+    buildCase1Tree,
+    buildCase2Tree,
+    buildCase3Tree,
+    buildCase4Tree,
+    buildCase5Tree
+  };
+
+  const int antallCase = sizeof(byggeFunksjoner) /sizeof(AlleByggeFunksjoner);
+  int sukksessArray[antallCase] = { 1,0,1,1,1}; 
+
+  for(int i = 0; i < antallCase; i ++){
+  cout << "case " << (i+1) << " tre" << endl;
+  gRoot = byggeFunksjoner[i](); 
+  printBT(gRoot); 
+  erKomplettTre(gRoot);
+  if(gKomplettTre == sukksessArray[i]){
+    cout << "sukkses" <<endl;
+  }  else {
+    cout << "feil" << endl;
+  }
+  cout << " - - - - - - - - - - \n" << endl;
+  nullStill();
+  }
+
+  /*
+  cout << "case 1 tree" << endl;
+  gRoot = buildCase1Tree();
+  printBT(gRoot); 
+  erKomplettTre(gRoot);
+  if(gKomplettTre){
+    cout << "succes" <<endl;
+  }  else {
+    cout << "fail" << endl;
+  }
+  cout << " - - - - - - - - - - " << endl;
+  nullStill();
+
+  cout << "case 2 tree" << endl;
+  gRoot = buildCase2Tree();
+  printBT(gRoot); 
+  erKomplettTre(gRoot);
+  if(!gKomplettTre){
+    cout << "succes" <<endl;
+  }   else {
+    cout << "fail" << endl;
+  }
+  cout << " - - - - - - - - - - " << endl;
+  nullStill();
+
+
+  cout << "case 3 tree" << endl;
+  gRoot = buildCase3Tree();
+  printBT(gRoot); 
+  erKomplettTre(gRoot);
+  if(gKomplettTre){
+    cout << "succes" <<endl;
+  } else {
+    cout << "fail" << endl;
+  }
+  cout << " - - - - - - - - - - " << endl;
+  nullStill();
+  */
+
+  return 0;
 }
