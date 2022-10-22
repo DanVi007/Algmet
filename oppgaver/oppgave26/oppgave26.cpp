@@ -20,21 +20,15 @@ int gNeighbour[N][N] = {
 
 
 int requirement[N]= {21,33,14,27,1,14,20,12,28,20} ; // index is id
+// nodeArray is the mapping of reference number and id 
 int nodeArray[N] = {0,1,2,3,4,5,6,7,8,9}; // index is reference , value is id  
 
-int getIndex(int reference){
-    int index = 0; 
-    for(int i : nodeArray) {
-        if(i == reference){
-            return index; 
-        }
-        index++;
-    }
-
-return -1;
-}
-
+/**
+ * checks if the requirement is met. 
+ * Only call this when its on the final permutation  
+ */
 bool requirementMet(){
+    //  
     for(int i = 0; i < N; i++){
         int sumOfNeighbours = 0; 
         for(int j = 0; j < N; j++) {
