@@ -141,6 +141,7 @@ void erKomplettTre(Node * node ){
   gNivaa--;
 }
 */
+/*
 
 void erKomplettTre(Node * node){
   if(node && gKomplettTre){// rell 
@@ -175,6 +176,7 @@ void erKomplettTre(Node * node){
 
   
 }
+*/
 
 void erKomplettTre2(Node * node) {
   gNivaa++;
@@ -459,8 +461,8 @@ void erKomplettTre10(Node * node){
   if(node && gKomplettTre) {
     // caser for om det ikke er et komplett tre 
     if(
-      (node->right && !node->left) // default case(1)
-      || (gDybde != 0 && gNivaa == gDybde -1 && node->left && node->right)// se punkt 2 i komentaren over 
+      (node->right && !node->left) // default case(1) har ingen venstre, men en høyre
+      || (gDybde != 0 && gNivaa == gDybde -1 && !(node->left && node->right))//om gDybde er satt (ikke 0) og gNivå er rett over gDybde og om den mangler barn (punkt 2) 
       || (gNivaaOpp && gNivaa < gDybde && !(node->left && node->right))// se punkt 5 i komentaren over 
       || (gNivaaOpp && gNivaa > gDybde) // se punkt 6 i komentaren over 
     ){
@@ -469,10 +471,10 @@ void erKomplettTre10(Node * node){
     }
     erKomplettTre10(node->right);
     if(
-      (!node->right && gDybde == 0 && gNivaa == 0)// se punkt 3 
-      (!gNivaaOpp && (node->left || node->right)) // se punkt 4
+      (!node->right && gDybde == 0 && gNivaa == 0)// rot noden er høyreste høyre node 
+      || (!gNivaaOpp && (node->left || node->right) ) // se punkt 4
       ){
-      gDybde = 1; 
+      gDybde++; 
       gNivaaOpp = true;
     } else if(!gNivaaOpp && !node->right) { // se punkt 2 (kan kortes? gNivaaOpp trengs ikke? (samle dem?))
       gDybde = gNivaa; 
