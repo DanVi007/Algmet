@@ -60,7 +60,7 @@ void erKomplettTre(Node * node){
     erKomplettTre(node->right);
     if(
       (!node->right && gDybde == 0 && gNivaa == 0)// rot noden er høyreste høyre node 
-      || (!gNivaaOpp && (node->left || node->right) ) // se punkt 4
+      || (!gNivaaOpp &&gNivaa == gDybde && ((node->left && !node->right)  || (node->left && node->right))) // se punkt 4 (clean up here )
       ){
       gDybde++; 
       gNivaaOpp = true;
@@ -103,33 +103,33 @@ void nullStill(){
   gNivaa = -1;
 }
 
-Node* buildCase1Tree(){
+Node* byggCase1Tre(){
   Node *n1 = new Node(1,nullptr,nullptr);
   return n1;
 }
 
-Node* buildCase2Tree(){
+Node* byggCase2Tre(){
   Node *n1 = new Node(1,nullptr,nullptr),
        *n2 = new Node(2,nullptr,n1 );
 
   return n2;
 }
 
-Node* buildCase3Tree(){
+Node* byggCase3Tre(){
   Node *n1 = new Node(1,nullptr,nullptr),
        *n2 = new Node(2,n1,nullptr );
 
   return n2;
 }
 
-Node* buildCase4Tree(){
+Node* byggCase4Tre(){
   Node *n1 = new Node(1,nullptr,nullptr),
        *n2 = new Node(2,nullptr,nullptr ),
        *root = new Node(3,n1,n2);
   return root ;
 }
 
-Node* buildCase5Tree(){
+Node* byggCase5Tre(){
   Node *n0 = new Node(0,nullptr,nullptr), 
         *n1 = new Node(1,n0,nullptr),
        *n2 = new Node(2,nullptr,nullptr ),
@@ -137,71 +137,78 @@ Node* buildCase5Tree(){
   return root ;
 }
 
+Node* byggCase6Tre(){
+  Node *n0 = new Node(0,nullptr,nullptr), 
+        *n3 = new Node(3, nullptr,nullptr),
+        *n1 = new Node(1,n0,n3),
+       *n2 = new Node(2,nullptr,nullptr ),
+       *root = new Node(3,n1,n2);
+  return root ;
+}
+
+Node* byggCase7Tre(){
+
+  Node    *n5 = new  Node(5, nullptr,nullptr),
+    * n2 = new Node(2, n5, nullptr),
+  *n3 = new Node(3, nullptr,nullptr), 
+        *n1 = new Node(1,n3,nullptr ),
+       *root = new Node('r',n1,n2);
+  return root ;
+}
+
+Node* byggCase8Tre(){
+  Node * n1 = new Node(1,nullptr,nullptr),
+        *n2 = new Node(2,nullptr,nullptr),
+        *n3 = new Node(3,nullptr,nullptr),
+        *n4 = new Node(4, n1,n2),
+        *n5 = new Node(5, n3,nullptr),
+        *n6 = new Node(6, n5,nullptr),
+        *n7 = new Node(7,nullptr,n6),
+        *n8 = new Node(8,n4,n7);
+  return n8;
+}
+
+Node* byggCase9Tre(){
+  Node *n1 = new Node(1,nullptr,nullptr),
+      *n5 = new Node(5, nullptr,nullptr),
+      *n2 = new Node(2, n1,nullptr),
+      *n3 = new Node(3, n2, nullptr),
+      *n4 = new Node(4,n3, n5);
+    return n4;
+}
+
 int main(int argc, char const *argv[])
 {
   AlleByggeFunksjoner byggeFunksjoner[] = {
-    buildCase1Tree,
-    buildCase2Tree,
-    buildCase3Tree,
-    buildCase4Tree,
-    buildCase5Tree
+    byggCase1Tre,
+    byggCase2Tre,
+    byggCase3Tre,
+    byggCase4Tre,
+    byggCase5Tre,
+    byggCase6Tre,
+    byggCase7Tre,
+    byggCase8Tre,
+    byggCase9Tre
   };
 
   const int antallCase = sizeof(byggeFunksjoner) /sizeof(AlleByggeFunksjoner);
-  int sukksessArray[antallCase] = { 1,0,1,1,1}; 
+  int sukksessArray[antallCase] = { 1,0,1,1,1, 1,0,0, 0}; 
 
   for(int i = 0; i < antallCase; i ++){
-  cout << "case " << (i+1) << " tre" << endl;
-  gRoot = byggeFunksjoner[i](); 
-  printBT(gRoot); 
-  erKomplettTre(gRoot);
-  if(gKomplettTre == sukksessArray[i]){
-    cout << "sukkses" <<endl;
-  }  else {
-    cout << "feil" << endl;
+    cout << "case " << (i+1) << " tre" << endl;
+    string komplettEllerIkke = sukksessArray[i] ? "Et " : "Ikke et " ;
+    cout << komplettEllerIkke<< "komplett tre " << endl; 
+    gRoot = byggeFunksjoner[i](); 
+    printBT(gRoot); 
+    erKomplettTre(gRoot);
+    if(gKomplettTre == sukksessArray[i]){
+      cout << "sukkses" <<endl;
+    }  else {
+      cout << "feil" << endl;
+    }
+    cout << " - - - - - - - - - - \n" << endl;
+    nullStill();
   }
-  cout << " - - - - - - - - - - \n" << endl;
-  nullStill();
-  }
-
-  /*
-  cout << "case 1 tree" << endl;
-  gRoot = buildCase1Tree();
-  printBT(gRoot); 
-  erKomplettTre(gRoot);
-  if(gKomplettTre){
-    cout << "succes" <<endl;
-  }  else {
-    cout << "fail" << endl;
-  }
-  cout << " - - - - - - - - - - " << endl;
-  nullStill();
-
-  cout << "case 2 tree" << endl;
-  gRoot = buildCase2Tree();
-  printBT(gRoot); 
-  erKomplettTre(gRoot);
-  if(!gKomplettTre){
-    cout << "succes" <<endl;
-  }   else {
-    cout << "fail" << endl;
-  }
-  cout << " - - - - - - - - - - " << endl;
-  nullStill();
-
-
-  cout << "case 3 tree" << endl;
-  gRoot = buildCase3Tree();
-  printBT(gRoot); 
-  erKomplettTre(gRoot);
-  if(gKomplettTre){
-    cout << "succes" <<endl;
-  } else {
-    cout << "fail" << endl;
-  }
-  cout << " - - - - - - - - - - " << endl;
-  nullStill();
-  */
 
   return 0;
 }
