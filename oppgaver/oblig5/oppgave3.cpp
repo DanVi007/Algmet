@@ -17,58 +17,6 @@ int gDybde = 0 , ///< Aktuell max.dybde å sjekke noder opp mot.
     gNivaa = -1; ///< Aktuelt nivå node/nullptr er på.
 
 /**
- * ide:
- * deprecated feiler på case 11  
- * 1. Default case for alle noder uansett nivå
- * ** om det er en node med høyre barn men ingen venstre, vil det ikke være et komplett tre  
- * 
- * 
- * 
- * 2. traverserer treet fra høyre til venstre. dvs høyre barn først dermed seg selv og så venstre barn. 
- * Funksjonen henter først ut høyrenoden helt til høyre. Nivået på denne høyrenoden blir initielt gDybde
- * de neste nodene som har nivå gDybde -1 må ha fullt barn, dvs både venstre og høyre barn.
- * 
- * 3. Dersom høyrenoden helt til høyre har nivå 0 blir gNivaaOpp satt til å være true og gDybde til å være 1  
- * 
- * 4. Noder som har nivå gdybde kan enten ha ingen barn, fullt barn eller bare venstre barn .(kan kortes siden default case allerede sjekkes)
- *  Første gang en node med manglende høyre barn eller fullt barn blir funnet på dette nivået og gNivaaOpp er false
- *  blir gdybde++ og gNivaaOpp blir satt til true, et unntak er om noden ikke følger default casen. 
- * 
- * 5.Dersom gNivaaOpp er true skal alle de neste nodene på nivå under gDybde ha fullt barn for at det skal være komplett tre. Dvs hvis 
- * gNivaopp == true && !(node->left && node->right) && gNivaa < gDybde 
- * 
- * 6. Dersom gNivaOpp er true og det er noen noder som er større enn gDybde vil det ikke være komplett
- * 
-*/
-void erKomplettTreGammel(Node * node){
-  gNivaa++;
-  if(node && gKomplettTre) {
-    // caser for om det ikke er et komplett tre 
-    if(
-      (node->right && !node->left) // default case(1) har ingen venstre, men en høyre
-      || (gDybde != 0 && gNivaa == gDybde -1 && !(node->left && node->right))//om gDybde er satt (ikke 0) og gNivå er rett over gDybde og om den mangler barn (punkt 2) 
-      || (gNivaaOpp && gNivaa < gDybde && !(node->left && node->right))// se punkt 5 i komentaren over 
-      || (gNivaaOpp && gNivaa > gDybde) // se punkt 6 i komentaren over 
-    ){
-      gKomplettTre = false;
-      return;
-    }
-    erKomplettTreGammel(node->right);
-    if(
-      (!node->right && gDybde == 0 && gNivaa == 0)// rot noden er høyreste høyre node 
-      || (!gNivaaOpp &&gNivaa == gDybde && ((node->left && !node->right)  || (node->left && node->right))) // se punkt 4 (clean up here )
-      ){
-      gDybde++; 
-      gNivaaOpp = true;
-    } else if(!gNivaaOpp && !node->right) { // se punkt 2 (kan kortes? gNivaaOpp trengs ikke? (samle dem?))
-      gDybde = gNivaa; 
-    }
-    erKomplettTreGammel(node->left);
-  }
-  gNivaa--;
-}
-
-/**
  * 1. traverserer treet fra høyre barn til venstre. dvs høyre barn først dermed 
  *    seg selv også venstre barn.(reverse inorder) 
  * 
@@ -76,7 +24,8 @@ void erKomplettTreGammel(Node * node){
  *    høyre barn helt til høyre. Når denne blir funnet setter den gDybde til å 
  *    være gNivaa. (gNivaaOpp må være false for at sjekken skal foretas) 
  * 
- * 3. Dersom den finner en node på samme nivaa som gDybde og har minst ett barn.
+ * 3. Dersom den finner en node på samme nivaa som gDybde og har enten kun 
+ *    venstre barn eller begge barna.  
  *    Vil den nye gDybden være gNivaa +1 og gNivaaOpp vil være true. 
  *    (gNivaaOpp må være false for at sjekken skal foretas). Den har nå funnet
  *    maksdybden et komplett tre kan være. 
@@ -97,26 +46,26 @@ void erKomplettTre(Node * node){
     if((gNivaa < gDybde && !(node->left && node->right))//Er nivået til noden
                                                         //lavere enn gDybde og
                                                         //har den ikke fullt 
-                                                        //barn?  
+                                                        //barn? (punkt 4)  
         || (gNivaaOpp && gNivaa > gDybde) //Har globale dybden gått opp et nivå 
                                           //og er nivået til noden større enn 
-                                          //denne dybden?
+                                          //denne dybden? (punkt 5)
         || (node->right && !node->left)){ //Har noden ett høyre barn uten ett 
-                                          //venstre barn? 
+                                          //venstre barn? (punkt 6)
           gKomplettTre = false; //Hvis ja, da er det ikke et komplett tre.
           return; //De neste linjene vil ikke kjøres. 
     }
     erKomplettTre(node->right);//kaller seg selv rekursivt med høyre barn. 
                                //Høyre barn lengst til høyre vil da bli funnet 
-                               //først. 
+                               //først. (punkt 1)
     // leter etter maks dybde 
     if(!gNivaaOpp && !node->right){//Har gDybden ikke gått opp et nivå en gang
-                                   //før og er det ingen høyre barn? 
+                                   //før og er det ingen høyre barn? (punkt 2) 
       gDybde = gNivaa;//Ja, da har høyrebarn lengst til høyre blitt funnet. 
     }
     //Er gNivaaOpp false og noden sitt nivå det samme som dybden? 
     //Har noden minst ett nodebarn? (tilfellet der noden kun har
-    //høyre barn er ikke reelt siden det blir fanget opp i punkt 6) 
+    //høyre barn er ikke reelt siden det blir fanget opp i punkt 6) (punkt 3)
     if(!gNivaaOpp && gNivaa == gDybde && (node->left || node->right)){
       gDybde = gNivaa +1;//setter ny gDybde til å være en mer enn nivå til node 
       gNivaaOpp = true;//Denne inkrementering vil skje kun en gang. 
@@ -359,6 +308,5 @@ int main(int argc, char const *argv[])
     cout << antallSukkses << "/" << antallCase
           << " tester var sukksesfulle." << endl;
   }
-
   return 0;
 }
