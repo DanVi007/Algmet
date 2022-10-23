@@ -10,15 +10,11 @@ struct Node{
     }
 }; 
 
-// https://cplusplus.com/forum/beginner/4639/
-typedef Node* (*AlleByggeFunksjoner)();
-
-Node* gRoot = nullptr;
-bool gKomplettTre = true,
-    gNivaaOpp = false ; 
-int gDybde = 0 , // gDybde blir nivaa til den første noden som blir funnet 
-    gNivaa = -1;
-
+Node* gRoot = nullptr; ///< Rotpeker til hele treet
+bool gKomplettTre = true,   ///< Er treet komplett eller ei.
+    gNivaaOpp = false ; ///< Gått opp ett nivå en gang eller ei.
+int gDybde = 0 , ///< Aktuell max.dybde å sjekke noder opp mot.
+    gNivaa = -1; ///< Aktuelt nivå node/nullptr er på.
 
 /**
  * ide:
@@ -73,47 +69,68 @@ void erKomplettTreGammel(Node * node){
 }
 
 /**
- * 1. traverserer treet fra høyre barn til venstre. dvs høyre barn først dermed seg selv også venstre barn.(reverse inorder) 
- * 2. Finner aller først den høyrenoden lengst til høyre. dvs første node uten høyre barn helt til høyre. 
- *    Når denne blir funnet setter den gDybde til å være gNivaa. (gNivaaOpp må være false for at sjekken skal foretas) 
- * 3. Dersom den finner en node på samme nivaa som gDybde og har minst ett barn . Vil den nye gDybden være 
- *    gNivaa +1 og gNivaaOpp vil være true. (gNivaaOpp må være false for at sjekken skal foretas). Den har nå funnet maksdybden 
- *    et komplett tre kan være. 
+ * 1. traverserer treet fra høyre barn til venstre. dvs høyre barn først dermed 
+ *    seg selv også venstre barn.(reverse inorder) 
+ * 
+ * 2. Finner aller først den høyrenoden lengst til høyre. dvs første node uten
+ *    høyre barn helt til høyre. Når denne blir funnet setter den gDybde til å 
+ *    være gNivaa. (gNivaaOpp må være false for at sjekken skal foretas) 
+ * 
+ * 3. Dersom den finner en node på samme nivaa som gDybde og har minst ett barn.
+ *    Vil den nye gDybden være gNivaa +1 og gNivaaOpp vil være true. 
+ *    (gNivaaOpp må være false for at sjekken skal foretas). Den har nå funnet
+ *    maksdybden et komplett tre kan være. 
  * 
  * Krav for ett fullt tre 
  * 4. Noder med gNivaa < gDybde må ha ett fult sett med barn. 
- * 5. Dersom gNivaaOpp er true dvs. et komplett tres maks dybde er funnet. Da må alle noder ha nivå lik eller under gDybde. 
- * 6. Dersom en node har ett høyre barn men ingen venstre barn er det ikke et komplett tre(uansett).
- * TODO: debug suspecting wrong  
+ *
+ * 5. Dersom gNivaaOpp er true dvs. et komplett tres maks dybde er funnet.
+ *    Da må alle noder ha nivå lik eller under gDybde. 
+ * 
+ * 6. Dersom en node har ett høyre barn men ingen venstre barn er det ikke et 
+ *    komplett tre(uansett).
  */
 void erKomplettTre(Node * node){
   if(node && gKomplettTre){
     gNivaa++;
-    //sjekker om krav for ett fult tre er oppnådd
-    if((gNivaa < gDybde && !(node->left && node->right)) 
-        || (gNivaaOpp && gNivaa > gDybde)
-        || (node->right && !node->left)){
-          gKomplettTre = false;
-          return;
+    //sjekker om krav for ett komplett tre er brutt 
+    if((gNivaa < gDybde && !(node->left && node->right))//Er nivået til noden
+                                                        //lavere enn gDybde og
+                                                        //har den ikke fullt 
+                                                        //barn?  
+        || (gNivaaOpp && gNivaa > gDybde) //Har globale dybden gått opp et nivå 
+                                          //og er nivået til noden større enn 
+                                          //denne dybden?
+        || (node->right && !node->left)){ //Har noden ett høyre barn uten ett 
+                                          //venstre barn? 
+          gKomplettTre = false; //Hvis ja, da er det ikke et komplett tre.
+          return; //De neste linjene vil ikke kjøres. 
     }
-    erKomplettTre(node->right);
+    erKomplettTre(node->right);//kaller seg selv rekursivt med høyre barn. 
+                               //Høyre barn lengst til høyre vil da bli funnet 
+                               //først. 
     // leter etter maks dybde 
-    if(!gNivaaOpp && !node->right){
-      gDybde = gNivaa;
+    if(!gNivaaOpp && !node->right){//Har gDybden ikke gått opp et nivå en gang
+                                   //før og er det ingen høyre barn? 
+      gDybde = gNivaa;//Ja, da har høyrebarn lengst til høyre blitt funnet. 
     }
-    if(!gNivaaOpp && gNivaa == gDybde && (node->left || node->right)){// reelt er (node->left || node->left ) kun to tilfeller enten venstre og høyre eller kun venstre.
-      gDybde = gNivaa +1; 
-      gNivaaOpp = true;
+    //Er gNivaaOpp false og noden sitt nivå det samme som dybden? 
+    //Har noden minst ett nodebarn? (tilfellet der noden kun har
+    //høyre barn er ikke reelt siden det blir fanget opp i punkt 6) 
+    if(!gNivaaOpp && gNivaa == gDybde && (node->left || node->right)){
+      gDybde = gNivaa +1;//setter ny gDybde til å være en mer enn nivå til node 
+      gNivaaOpp = true;//Denne inkrementering vil skje kun en gang. 
     }
     erKomplettTre(node->left);
     gNivaa--;
   }
 }
 
+// teste funksjoner
 /**
  * Printing a binary tree 
  */
-// https://stackoverflow.com/questions/36802354/print-binary-tree-in-a-pretty-way-using-c
+//https://stackoverflow.com/questions/36802354/print-binary-tree-in-a-pretty-way-using-c
 void printBT(const std::string &prefix, const Node *node, bool isLeft)
 {
     if (node != nullptr)
@@ -248,6 +265,52 @@ Node * byggCase12Tre(){
 
 }
 
+Node * byggCase13Tre(){
+  Node* n6, * n8, * n11a, * n11b, * n12, * n13a, * n13b,
+        * n17, * n28, * n31, * n33, * n34, * n35a, * n35b, * n39, * n72;
+
+    n8 = new Node(8, nullptr, nullptr);
+    n11b = new Node(11, nullptr, nullptr);
+    n13b = new Node(13, nullptr, nullptr);
+    n31 = new Node(31, nullptr, nullptr);
+    n35b = new Node(35, nullptr, nullptr);
+    n34 = new Node(34,n35b, nullptr);
+    n12 = new Node(12, n11b, nullptr);
+    n39 = new Node(39,nullptr, nullptr);
+    n72 = new Node(72, nullptr, nullptr);
+    n6 = new Node(6, n72, nullptr);
+    n13a = new Node(13, n12, nullptr);
+    n28 = new Node(28, nullptr, nullptr);
+    n35a = new Node(35, n34, n39);
+    n11a = new Node(11, n6, n13a);
+    n33 = new Node(33, n28, n35a);
+    n17 = new Node(17, n11a, n33);
+    gRoot = n17;
+  return gRoot;
+}
+
+Node * byggCase14Tre(){
+  Node * n1 = new Node(1, nullptr,nullptr),
+       * n2= new Node(2,nullptr,nullptr),
+       * n3= new Node(3,nullptr,nullptr),
+       * n4= new Node(4,nullptr,nullptr),
+       * n5= new Node(5,nullptr,nullptr),
+       * n6= new Node(6,nullptr,nullptr),
+       * n7= new Node(7,nullptr,nullptr),
+       * n8= new Node(8,nullptr,nullptr),
+       * n9= new Node(9,n1,n2),
+       * n10= new Node(10,n3,n4),
+       * n11= new Node(11,n5,n6),
+       * n12= new Node(12,n7,n8),
+       * n13= new Node(13,n9,n10),
+       * n14= new Node(14,n11,n12),
+       * n15= new Node(15,n13,n14);
+    return n15;
+}
+
+// https://cplusplus.com/forum/beginner/4639/
+typedef Node* (*AlleByggeFunksjoner)();
+
 int main(int argc, char const *argv[])
 {
   AlleByggeFunksjoner byggeFunksjoner[] = {
@@ -262,11 +325,14 @@ int main(int argc, char const *argv[])
     byggCase9Tre,
     byggCase10Tre,
     byggCase11Tre,
-    byggCase12Tre
+    byggCase12Tre,
+    byggCase13Tre,
+    byggCase14Tre
   };
 
-  const int antallCase = sizeof(byggeFunksjoner) /sizeof(AlleByggeFunksjoner);
-  int sukksessArray[antallCase] = { 1,0,1,1,1, 1,0,0, 0,0,0 ,0}; 
+  const int antallCase = sizeof(byggeFunksjoner)
+                          /sizeof(AlleByggeFunksjoner);
+  int sukksessArray[antallCase] = { 1,0,1,1,1, 1,0,0, 0,0,0 ,0,0,1}; 
   int antallSukkses = 0; 
 
   for(int i = 0; i < antallCase; i ++){
@@ -290,7 +356,8 @@ int main(int argc, char const *argv[])
   if(antallCase == antallSukkses){
     cout << "Alle testene var en sukkses. " << endl;
   } else {
-    cout << antallSukkses << "/" << antallCase << " tester var sukksesfulle." << endl;
+    cout << antallSukkses << "/" << antallCase
+          << " tester var sukksesfulle." << endl;
   }
 
   return 0;
