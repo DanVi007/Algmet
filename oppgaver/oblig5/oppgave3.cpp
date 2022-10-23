@@ -17,18 +17,18 @@ int gDybde = 0 , ///< Aktuell max.dybde å sjekke noder opp mot.
     gNivaa = -1; ///< Aktuelt nivå node/nullptr er på.
 
 /**
- * 1. traverserer treet fra høyre barn til venstre. dvs høyre barn først dermed 
- *    seg selv også venstre barn.(reverse inorder) 
+ * 1. traverserer treet fra høyre barn til venstre. dvs høyre barn først 
+ *    dermed seg selv også venstre barn.(reverse inorder) 
  * 
- * 2. Finner aller først den høyrenoden lengst til høyre. dvs første node uten
- *    høyre barn helt til høyre. Når denne blir funnet setter den gDybde til å 
- *    være gNivaa. (gNivaaOpp må være false for at sjekken skal foretas) 
+ * 2. Finner aller først den høyrenoden lengst til høyre. dvs første node 
+ *    uten høyre barn helt til høyre. Når denne blir funnet setter den gDybde 
+ *    til å være gNivaa.(gNivaaOpp må være false for at sjekken skal foretas) 
  * 
  * 3. Dersom den finner en node på samme nivaa som gDybde og har enten kun 
  *    venstre barn eller begge barna.  
  *    Vil den nye gDybden være gNivaa +1 og gNivaaOpp vil være true. 
- *    (gNivaaOpp må være false for at sjekken skal foretas). Den har nå funnet
- *    maksdybden et komplett tre kan være. 
+ *    (gNivaaOpp må være false for at sjekken skal foretas). Den har nå 
+ *    funnet maksdybden et komplett tre kan være. 
  * 
  * Krav for ett fullt tre 
  * 4. Noder med gNivaa < gDybde må ha ett fult sett med barn. 
@@ -44,30 +44,30 @@ void erKomplettTre(Node * node){
     gNivaa++;
     //sjekker om krav for ett komplett tre er brutt 
     if((gNivaa < gDybde && !(node->left && node->right))//Er nivået til noden
-                                                        //lavere enn gDybde og
-                                                        //har den ikke fullt 
-                                                        //barn? (punkt 4)  
-        || (gNivaaOpp && gNivaa > gDybde) //Har globale dybden gått opp et nivå 
-                                          //og er nivået til noden større enn 
-                                          //denne dybden? (punkt 5)
-        || (node->right && !node->left)){ //Har noden ett høyre barn uten ett 
+                                                       //lavere enn gDybde 
+                                                       //og har den ikke 
+                                                      //fullt barn?(punkt 4)  
+        || (gNivaaOpp && gNivaa > gDybde)//Har gDybde gått opp et nivå 
+                                         //og er nivået til noden større enn 
+                                         //denne dybden? (punkt 5)
+        || (node->right && !node->left)){//Har noden ett høyre barn uten ett 
                                           //venstre barn? (punkt 6)
           gKomplettTre = false; //Hvis ja, da er det ikke et komplett tre.
           return; //De neste linjene vil ikke kjøres. 
     }
     erKomplettTre(node->right);//kaller seg selv rekursivt med høyre barn. 
-                               //Høyre barn lengst til høyre vil da bli funnet 
-                               //først. (punkt 1)
+                              //Høyre barn lengst til høyre vil da bli funnet 
+                              //først. (punkt 1)
     // leter etter maks dybde 
-    if(!gNivaaOpp && !node->right){//Har gDybden ikke gått opp et nivå en gang
-                                   //før og er det ingen høyre barn? (punkt 2) 
+    if(!gNivaaOpp && !node->right){//Har gdybden ikke gått opp et nivå en 
+                             //gang før og er det ingen høyre barn? (punkt 2) 
       gDybde = gNivaa;//Ja, da har høyrebarn lengst til høyre blitt funnet. 
     }
     //Er gNivaaOpp false og noden sitt nivå det samme som dybden? 
     //Har noden minst ett nodebarn? (tilfellet der noden kun har
     //høyre barn er ikke reelt siden det blir fanget opp i punkt 6) (punkt 3)
     if(!gNivaaOpp && gNivaa == gDybde && (node->left || node->right)){
-      gDybde = gNivaa +1;//setter ny gDybde til å være en mer enn nivå til node 
+      gDybde = gNivaa +1;//setter ny gDybde en mer enn node nivå 
       gNivaaOpp = true;//Denne inkrementering vil skje kun en gang. 
     }
     erKomplettTre(node->left);
