@@ -22,7 +22,7 @@ int gDybde = 0 , // gDybde blir nivaa til den første noden som blir funnet
 
 /**
  * ide:
- * 
+ * deprecated feiler på case 11  
  * 1. Default case for alle noder uansett nivå
  * ** om det er en node med høyre barn men ingen venstre, vil det ikke være et komplett tre  
  * 
@@ -44,7 +44,7 @@ int gDybde = 0 , // gDybde blir nivaa til den første noden som blir funnet
  * 6. Dersom gNivaOpp er true og det er noen noder som er større enn gDybde vil det ikke være komplett
  * 
 */
-void erKomplettTre(Node * node){
+void erKomplettTreGammel(Node * node){
   gNivaa++;
   if(node && gKomplettTre) {
     // caser for om det ikke er et komplett tre 
@@ -57,7 +57,7 @@ void erKomplettTre(Node * node){
       gKomplettTre = false;
       return;
     }
-    erKomplettTre(node->right);
+    erKomplettTreGammel(node->right);
     if(
       (!node->right && gDybde == 0 && gNivaa == 0)// rot noden er høyreste høyre node 
       || (!gNivaaOpp &&gNivaa == gDybde && ((node->left && !node->right)  || (node->left && node->right))) // se punkt 4 (clean up here )
@@ -67,9 +67,47 @@ void erKomplettTre(Node * node){
     } else if(!gNivaaOpp && !node->right) { // se punkt 2 (kan kortes? gNivaaOpp trengs ikke? (samle dem?))
       gDybde = gNivaa; 
     }
-    erKomplettTre(node->left);
+    erKomplettTreGammel(node->left);
   }
   gNivaa--;
+}
+
+/**
+ * 1. traverserer treet fra høyre barn til venstre. dvs høyre barn først dermed seg selv også venstre barn.(reverse inorder) 
+ * 2. Finner aller først den høyrenoden lengst til høyre. dvs første node uten høyre barn helt til høyre. 
+ *    Når denne blir funnet setter den gDybde til å være gNivaa. (gNivaaOpp må være false for at sjekken skal foretas) 
+ * 3. Dersom den finner en node på samme nivaa som gDybde og har minst ett barn . Vil den nye gDybden være 
+ *    gNivaa +1 og gNivaaOpp vil være true. (gNivaaOpp må være false for at sjekken skal foretas). Den har nå funnet maksdybden 
+ *    et komplett tre kan være. 
+ * 
+ * Krav for ett fullt tre 
+ * 4. Noder med gNivaa < gDybde må ha ett fult sett med barn. 
+ * 5. Dersom gNivaaOpp er true dvs. et komplett tres maks dybde er funnet. Da må alle noder ha nivå lik eller under gDybde. 
+ * 6. Dersom en node har ett høyre barn men ingen venstre barn er det ikke et komplett tre(uansett).
+ * TODO: debug suspecting wrong  
+ */
+void erKomplettTre(Node * node){
+  if(node && gKomplettTre){
+    gNivaa++;
+    //sjekker om krav for ett fult tre er oppnådd
+    if((gNivaa < gDybde && !(node->left && node->right)) 
+        || (gNivaaOpp && gNivaa > gDybde)
+        || (node->right && !node->left)){
+          gKomplettTre = false;
+          return;
+    }
+    erKomplettTre(node->right);
+    // leter etter maks dybde 
+    if(!gNivaaOpp && !node->right){
+      gDybde = gNivaa;
+    }
+    if(!gNivaaOpp && gNivaa == gDybde && (node->left || node->right)){// reelt er (node->left || node->left ) kun to tilfeller enten venstre og høyre eller kun venstre.
+      gDybde = gNivaa +1; 
+      gNivaaOpp = true;
+    }
+    erKomplettTre(node->left);
+    gNivaa--;
+  }
 }
 
 /**
@@ -177,6 +215,39 @@ Node* byggCase9Tre(){
     return n4;
 }
 
+Node * byggCase10Tre(){
+  Node * n1 = new Node(1,nullptr,nullptr),
+        *n3 = new Node(3,nullptr,nullptr),
+        *n2 = new Node(2,n1,nullptr),
+        *n4 = new Node(4,n3,n2);
+        return n4;
+}
+
+Node* byggCase11Tre(){
+  Node * n1 = new Node(1,nullptr,nullptr),
+      * n2 = new Node(2,nullptr,nullptr),
+      * n3 = new Node(3,nullptr,nullptr) ,
+      * n4 = new Node(4,n1,nullptr),
+      * n5 = new Node(5,n4,n2),
+      * n6 = new Node(6,n3,nullptr),
+      * n7 = new Node(7,n5,n6);
+  return n7;
+}
+
+Node * byggCase12Tre(){
+  Node* n1 = new Node(1,nullptr,nullptr),
+      * n2 = new Node(2,nullptr,nullptr),
+      * n3 = new Node(3,nullptr,nullptr),
+      * n4 = new Node(4,nullptr,nullptr),
+      * n5 = new Node(5,nullptr,nullptr),
+      * n6 = new Node(6,n2,n3),
+      * n7 = new Node(7,n4,n5),
+      * n8 = new Node(8,n6,n7),
+      * n9 = new Node(9,n1,n8);
+    return n9;
+
+}
+
 int main(int argc, char const *argv[])
 {
   AlleByggeFunksjoner byggeFunksjoner[] = {
@@ -188,11 +259,15 @@ int main(int argc, char const *argv[])
     byggCase6Tre,
     byggCase7Tre,
     byggCase8Tre,
-    byggCase9Tre
+    byggCase9Tre,
+    byggCase10Tre,
+    byggCase11Tre,
+    byggCase12Tre
   };
 
   const int antallCase = sizeof(byggeFunksjoner) /sizeof(AlleByggeFunksjoner);
-  int sukksessArray[antallCase] = { 1,0,1,1,1, 1,0,0, 0}; 
+  int sukksessArray[antallCase] = { 1,0,1,1,1, 1,0,0, 0,0,0 ,0}; 
+  int antallSukkses = 0; 
 
   for(int i = 0; i < antallCase; i ++){
     cout << "case " << (i+1) << " tre" << endl;
@@ -203,11 +278,19 @@ int main(int argc, char const *argv[])
     erKomplettTre(gRoot);
     if(gKomplettTre == sukksessArray[i]){
       cout << "sukkses" <<endl;
+      antallSukkses++;
     }  else {
       cout << "feil" << endl;
     }
     cout << " - - - - - - - - - - \n" << endl;
     nullStill();
+  }
+
+  cout << "Testet " << antallCase << " tilfeller." << endl;
+  if(antallCase == antallSukkses){
+    cout << "Alle testene var en sukkses. " << endl;
+  } else {
+    cout << antallSukkses << "/" << antallCase << " tester var sukksesfulle." << endl;
   }
 
   return 0;
