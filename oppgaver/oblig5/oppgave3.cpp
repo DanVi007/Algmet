@@ -83,39 +83,38 @@ litt annerledes enn erKomplettTre.
 2. Føste node som er nullptr som blir funnet blir satt til gDybde dersom
   gDybde ikke allerede er satt. 
 
-3. Dersom det finnes en nullptr på samme nivå som gDybde og gNivaaOpp er 
+3. Dersom det finnes en nullptr på et nivå over gDybde og gNivaaOpp er 
   false. Da skal gDybde oppdateres til nåværende nivå og gNivaaOpp = true
 
 
 Tilfeller for ikke et komplett tre 
-a1. Dersom det gDybde er satt og det finnes en node på høyere nivå.  
+
+a1. Dersom det finnes en nullptr på nivå som ikke er gDybde -1 eller gdybde 
 a2. Dersom gNivaaOpp er true og det finnes en nullptr som ikke er på gDybde 
     nivå.
 
 */
 void erKomplettTre2(Node * node){
   gNivaa++;
-  if(node ){
+  if(node) {
+   if(gKomplettTre){
     erKomplettTre2(node->left);
-    
-
-    erKomplettTre2(node->right);
-    
-  } else {
-    //if(gDybde != 0 && gNivaa != gDybde){
-    //  gKomplettTre = false;
-    //  return;
-    //}
-    if(gNivaa == gDybde -1 ) {
-     gNivaaOpp = false; 
-      gDybde = gNivaa;
+    if(gDybde != 0) {
+      erKomplettTre2(node->right);
     }
+   } 
+  } else {
     if(gDybde == 0){
       gDybde = gNivaa;
-    } 
+    } else if(!gNivaaOpp && gNivaa == gDybde-1 ){
+      gDybde = gNivaa;
+      gNivaaOpp = true;
+    }
+    if(gNivaaOpp && gNivaa != gDybde){
+      gKomplettTre =false;
+    }
   }
-
-  
+  gNivaa--;
 }
 
 // teste funksjoner
