@@ -7,7 +7,7 @@ struct Node{
       ID= id; 
       left = l;
       right = r;
-    }
+   }
 }; 
 
 Node* gRoot = nullptr; ///< Rotpeker til hele treet
@@ -73,6 +73,49 @@ void erKomplettTre(Node * node){
     erKomplettTre(node->left);
     gNivaa--;
   }
+}
+
+
+/*
+litt annerledes enn erKomplettTre. 
+1. traverserer treet på en inorder måte dvs venstre, seg selv også høyre
+
+2. Føste node som er nullptr som blir funnet blir satt til gDybde dersom
+  gDybde ikke allerede er satt. 
+
+3. Dersom det finnes en nullptr på samme nivå som gDybde og gNivaaOpp er 
+  false. Da skal gDybde oppdateres til nåværende nivå og gNivaaOpp = true
+
+
+Tilfeller for ikke et komplett tre 
+a1. Dersom det gDybde er satt og det finnes en node på høyere nivå.  
+a2. Dersom gNivaaOpp er true og det finnes en nullptr som ikke er på gDybde 
+    nivå.
+
+*/
+void erKomplettTre2(Node * node){
+  gNivaa++;
+  if(node ){
+    erKomplettTre2(node->left);
+    
+
+    erKomplettTre2(node->right);
+    
+  } else {
+    //if(gDybde != 0 && gNivaa != gDybde){
+    //  gKomplettTre = false;
+    //  return;
+    //}
+    if(gNivaa == gDybde -1 ) {
+     gNivaaOpp = false; 
+      gDybde = gNivaa;
+    }
+    if(gDybde == 0){
+      gDybde = gNivaa;
+    } 
+  }
+
+  
 }
 
 // teste funksjoner
