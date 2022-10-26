@@ -1,4 +1,5 @@
 #include <iostream>          //  cout
+#include <string>
 using namespace std;
 struct Node{
     char ID;
@@ -111,6 +112,27 @@ void erKomplettTre2(Node * node){
       gNivaaOpp = true;
     }
     if(gNivaaOpp && gNivaa != gDybde){
+      gKomplettTre =false;
+    }
+  }
+  gNivaa--;
+}
+
+void erKomplettTre3(Node * node){
+  gNivaa++;
+  if(node) {
+   if(gKomplettTre){
+    erKomplettTre3(node->left);
+    erKomplettTre3(node->right);
+   } 
+  } else {
+    if(gDybde == 0){
+      gDybde = gNivaa;
+    } else if(!gNivaaOpp && gNivaa == gDybde-1 ){
+      gDybde = gNivaa;
+      gNivaaOpp = true;
+    }
+    if(gNivaa != gDybde){
       gKomplettTre =false;
     }
   }
@@ -299,11 +321,12 @@ Node * byggCase14Tre(){
     return n15;
 }
 
+
+
 // https://cplusplus.com/forum/beginner/4639/
 typedef Node* (*AlleByggeFunksjoner)();
 
-int main(int argc, char const *argv[])
-{
+void testFunksjoner(int metodeNr){
   AlleByggeFunksjoner byggeFunksjoner[] = {
     byggCase1Tre,
     byggCase2Tre,
@@ -325,14 +348,34 @@ int main(int argc, char const *argv[])
                           /sizeof(AlleByggeFunksjoner);
   int sukksessArray[antallCase] = { 1,0,1,1,1, 1,0,0, 0,0,0 ,0,0,1}; 
   int antallSukkses = 0; 
+  if(metodeNr > 0 && metodeNr < 4 ){
+    cout << "Tester metode " << metodeNr << " \n\n";
+  } 
 
   for(int i = 0; i < antallCase; i ++){
+    gRoot = byggeFunksjoner[i](); 
+    switch (metodeNr)
+    {
+    case 1:
+      erKomplettTre(gRoot);
+      cout << "kjorer erKomplettTre" << endl; 
+      break;
+    case 2: 
+      erKomplettTre2(gRoot);
+      cout << "kjorer erKomplettTre2" << endl; 
+      break;
+    case 3:
+      erKomplettTre3(gRoot);
+      cout << "kjorer erKomplettTre3" << endl; 
+      break;
+    default:
+      cout << "Ikke et gyldig metode nummer " << endl;
+      return;
+    }
     cout << "case " << (i+1) << " tre" << endl;
     string komplettEllerIkke = sukksessArray[i] ? "Et " : "Ikke et " ;
     cout << komplettEllerIkke<< "komplett tre " << endl; 
-    gRoot = byggeFunksjoner[i](); 
     printBT(gRoot); 
-    erKomplettTre(gRoot);
     if(gKomplettTre == sukksessArray[i]){
       cout << "sukkses" <<endl;
       antallSukkses++;
@@ -343,12 +386,18 @@ int main(int argc, char const *argv[])
     nullStill();
   }
 
-  cout << "Testet " << antallCase << " tilfeller." << endl;
+  cout << "Testet "<< antallCase <<" tilfeller. Metode " << metodeNr << endl;
   if(antallCase == antallSukkses){
     cout << "Alle testene var en sukkses. " << endl;
   } else {
     cout << antallSukkses << "/" << antallCase
           << " tester var sukksesfulle." << endl;
   }
+
+}
+
+int main(int argc, char const *argv[])
+{
+  testFunksjoner(3);
   return 0;
 }
