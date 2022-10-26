@@ -77,63 +77,38 @@ void erKomplettTre(Node * node){
 }
 
 
-/*
-litt annerledes enn erKomplettTre. 
-1. traverserer treet på en inorder måte dvs venstre, seg selv også høyre
-
-2. Føste node som er nullptr som blir funnet blir satt til gDybde dersom
-  gDybde ikke allerede er satt. 
-
-3. Dersom det finnes en nullptr på et nivå over gDybde og gNivaaOpp er 
-  false. Da skal gDybde oppdateres til nåværende nivå og gNivaaOpp = true
-
-
-Tilfeller for ikke et komplett tre 
-
-a1. Dersom det finnes en nullptr på nivå som ikke er gDybde -1 eller gdybde 
-a2. Dersom gNivaaOpp er true og det finnes en nullptr som ikke er på gDybde 
-    nivå.
-
-*/
+/**
+ * Istedenfor å sjekke barna til noden som erKomplettTre
+ * , denne metoden sjekker nivåene til nullptr funnet. 
+ * 1. traverserer treet på en inorder måte dvs venstre, seg selv også høyre
+ * 
+ * 2. Føste node som er nullptr som blir funnet blir satt til gDybde dersom
+ *   gDybde ikke allerede er satt. 
+ * 
+ * 3. Dersom det finnes en nullptr på et nivå over gDybde og gNivaaOpp er 
+ * false. Da skal gDybde oppdateres til nåværende nivå og gNivaaOpp = true
+ * 
+ * Tilfeller for ikke et komplett tre 
+ * a1. Dersom det finnes en nullptr som ikke er lik gDybde
+ *    (gDybde blir endret til å dekke alle tilfeller )
+ *
+ */
 void erKomplettTre2(Node * node){
   gNivaa++;
-  if(node) {
+  if(node) { //dersom noden eksisterer? 
    if(gKomplettTre){
-    erKomplettTre2(node->left);
-    if(gDybde != 0) {
-      erKomplettTre2(node->right);
-    }
+    erKomplettTre2(node->left); //(1)
+    erKomplettTre2(node->right);
    } 
-  } else {
-    if(gDybde == 0){
+  } else { // nådd nullptr 
+    if(gDybde == 0){ // er gDybde satt ? (2)
       gDybde = gNivaa;
-    } else if(!gNivaaOpp && gNivaa == gDybde-1 ){
+    }else if(!gNivaaOpp && gNivaa == gDybde-1 ){//er ett nivå over gDybde (3)
       gDybde = gNivaa;
       gNivaaOpp = true;
     }
-    if(gNivaaOpp && gNivaa != gDybde){
-      gKomplettTre =false;
-    }
-  }
-  gNivaa--;
-}
-
-void erKomplettTre3(Node * node){
-  gNivaa++;
-  if(node) {
-   if(gKomplettTre){
-    erKomplettTre3(node->left);
-    erKomplettTre3(node->right);
-   } 
-  } else {
-    if(gDybde == 0){
-      gDybde = gNivaa;
-    } else if(!gNivaaOpp && gNivaa == gDybde-1 ){
-      gDybde = gNivaa;
-      gNivaaOpp = true;
-    }
-    if(gNivaa != gDybde){
-      gKomplettTre =false;
+    if(gNivaa != gDybde){ //nivået er ikke lik gDybde
+      gKomplettTre =false;//treet er da ikke komplett (a1)
     }
   }
   gNivaa--;
@@ -348,7 +323,7 @@ void testFunksjoner(int metodeNr){
                           /sizeof(AlleByggeFunksjoner);
   int sukksessArray[antallCase] = { 1,0,1,1,1, 1,0,0, 0,0,0 ,0,0,1}; 
   int antallSukkses = 0; 
-  if(metodeNr > 0 && metodeNr < 4 ){
+  if(metodeNr > 0 && metodeNr < 3 ){
     cout << "Tester metode " << metodeNr << " \n\n";
   } 
 
@@ -363,10 +338,6 @@ void testFunksjoner(int metodeNr){
     case 2: 
       erKomplettTre2(gRoot);
       cout << "kjorer erKomplettTre2" << endl; 
-      break;
-    case 3:
-      erKomplettTre3(gRoot);
-      cout << "kjorer erKomplettTre3" << endl; 
       break;
     default:
       cout << "Ikke et gyldig metode nummer " << endl;
@@ -398,6 +369,7 @@ void testFunksjoner(int metodeNr){
 
 int main(int argc, char const *argv[])
 {
-  testFunksjoner(3);
+  testFunksjoner(1) ;
+  testFunksjoner(2);
   return 0;
 }
