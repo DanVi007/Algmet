@@ -13,12 +13,12 @@ struct Node{
 
 bool skrivNivaa(const Node * t , const int n , const int nivaa ){
     if(t){
-        if(nivaa == n ) {
+        if(n == nivaa) {
             cout << t->ID << " , "; 
             return true;
         }
-        bool venstreFunnet = skrivNivaa(t->left , n, nivaa+1) ;
-        bool hoyreFunnet = skrivNivaa(t->right , n, nivaa+1 ) ;
+        bool venstreFunnet = skrivNivaa(t->left , n+1 , nivaa) ;
+        bool hoyreFunnet = skrivNivaa(t->right , n+1, nivaa ) ;
         return venstreFunnet || hoyreFunnet; 
     }{
         return false;
