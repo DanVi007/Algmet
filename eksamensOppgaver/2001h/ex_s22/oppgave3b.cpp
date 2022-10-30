@@ -28,7 +28,7 @@ Node * byggBalansertBST(const int arr[] , const int start, const int slutt ){
     }
 }
 */
-/*
+ /*
 Node * byggBalansertBST(const int arr[] , const int start, const int slutt ){
     int midtersteIndeks = start + (slutt -start) /2;
     Node * rot = new Node(arr[midtersteIndeks]); 
@@ -41,10 +41,33 @@ Node * byggBalansertBST(const int arr[] , const int start, const int slutt ){
 */
 
 Node * byggBalansertBST(const int arr[] , const int start, const int slutt ){
-    int midtersteIndeks = start + (slutt -start) /2;
-    Node * rot = new Node(arr[midtersteIndeks]); 
-    if(!(start == slutt && slutt == midtersteIndeks))
-    rot->left = byggBalansertBST(arr,start ,midtersteIndeks-1);
-    rot-> right = byggBalansertBST(arr, midtersteIndeks+1 , slutt );
+    if(start <= slutt) {
+        int midtersteIndeks = start + (slutt -start) /2;
+        Node * rot = new Node(arr[midtersteIndeks]); 
+        rot->left = byggBalansertBST(arr,start ,midtersteIndeks-1);
+        rot-> right = byggBalansertBST(arr, midtersteIndeks+1 , slutt );
+        return rot;
+    } else {
+        return nullptr;
+    }
+}
+
+// probably worse would remove 
+Node * byggBalansertBSTv2(const int arr[] , const int start, const int slutt ){
+    int midtersteIndeks;
+    Node * rot; 
+    if(start <  slutt){
+        midtersteIndeks = start + (slutt -start) /2;
+        rot = new Node(arr[midtersteIndeks]); 
+        rot->left = byggBalansertBST(arr,start ,midtersteIndeks-1);
+        rot-> right = byggBalansertBST(arr, midtersteIndeks+1 , slutt );
+    } else if (start == slutt) {
+        midtersteIndeks = start; 
+    } else {
+        return nullptr; 
+    } 
     return rot;
 }
+
+
+

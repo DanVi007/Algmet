@@ -78,7 +78,7 @@ void erKomplettTre(Node * node){
 
 
 /**
- * Istedenfor å sjekke barna til noden som erKomplettTre
+ * Istedenfor å sjekke barna til noden som metode erKomplettTre
  * , denne metoden sjekker nivåene til nullptr funnet. 
  * 1. traverserer treet på en inorder måte dvs venstre, seg selv også høyre
  * 
