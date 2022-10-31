@@ -1,5 +1,7 @@
 #include <iostream> 
 #include <random>
+#include <fstream>
+#include <iomanip>
 using namespace std;
 
 int tallene[1000000] ;
@@ -56,10 +58,29 @@ void skrivTalleneFor(int tallArray[],int storelse ){
 }
 
 int main() {
+
     const int testStorelse = 20;
     int testTall[testStorelse];
     genererTallene(testTall, testStorelse);
     skrivTalleneFor(testTall,testStorelse);
     skrivSumTest(testTall,20);
+
+    // test frode
+   ifstream innfil("losninger/ex_s22_4.dta");      //  Åpner aktuell vil med
+   int tall;                                      //    1 million tall.
+   int i = 0;
+   if (innfil)  {                        //  Filen finnes.
+      innfil >> tall;                    //  Leser (om mulig) ETT tall.
+      while (!innfil.eof())  {           //  Ennå ikke nådd filslutt:
+        tallene[i++] = tall;             //  Lagrer unna innlest tall.
+        innfil >> tall;                  //  Leser (om mulig) NESTE tall.
+      }
+   } else                                //  Filen lot seg ikke finne/åpne:
+     cout << "\n\nFant ikke filen 'EX_S22_4.DTA'!\n\n";
+
+   
+   skrivSum();
+
+    
     return 0;
 }
