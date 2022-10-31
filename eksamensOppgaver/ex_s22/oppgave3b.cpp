@@ -69,5 +69,39 @@ Node * byggBalansertBSTv2(const int arr[] , const int start, const int slutt ){
     return rot;
 }
 
+//test 
+/**
+ * Printing a binary tree 
+ */
+//https://stackoverflow.com/questions/36802354/print-binary-tree-in-a-pretty-way-using-c
+void printBT(const std::string &prefix, const Node *node, bool isLeft)
+{
+    if (node != nullptr)
+    {
+        std::cout << prefix;
+        std::cout << (isLeft ? "|--" : "L--");
+        // print the value of the node
+        std::cout << (int)node->ID << std::endl;
+        // enter the next tree level - left and right branch
+        printBT(prefix + (isLeft ? "|   " : "    "), node->right, true);
+        printBT(prefix + (isLeft ? "|   " : "    "), node->left, false);
+    }
+}
+
+void printBT(const Node *node)
+{
+    printBT("", node, false);
+}
+
+int IDer[] {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16};
+
+int main(){
+    Node * root = byggBalansertBST(IDer, 0,15);
+    printBT(root);
+
+    root = byggBalansertBSTv2(IDer, 0,15);
+    printBT(root);
+    return 0;
+}
 
 

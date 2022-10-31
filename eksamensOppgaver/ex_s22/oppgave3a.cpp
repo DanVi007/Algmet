@@ -10,6 +10,8 @@ struct Node{
     }
 };
 
+Node * gRoot = nullptr;
+
 
 bool skrivNivaa(const Node * t , const int n , const int nivaa ){
     if(t){
@@ -23,4 +25,17 @@ bool skrivNivaa(const Node * t , const int n , const int nivaa ){
     }{
         return false;
     }
+}
+
+void  byggEksempelTre(){
+    gRoot = new Node(1);
+    gRoot -> left = new Node(2);
+    gRoot -> right = new Node(3);
+}
+
+int main(){
+    byggEksempelTre();
+    int aktueltNivaa = 1; 
+    while(skrivNivaa(gRoot,1 , aktueltNivaa) ) aktueltNivaa++;
+    return 0;
 }
