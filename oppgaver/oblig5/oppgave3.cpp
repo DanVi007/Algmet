@@ -296,6 +296,20 @@ Node * byggCase14Tre(){
     return n15;
 }
 
+Node * byggCase15Tre(){
+  Node * n1 = new Node(1, nullptr,nullptr),
+       * n2= new Node(2,nullptr,nullptr),
+       * n3= new Node(3,nullptr,nullptr),
+       * n4= new Node(4,n2,n1),
+       * n5= new Node(5,n3,nullptr),
+       * n6= new Node(6,n5,n4);
+    return n6;
+}
+
+
+
+
+
 
 
 // https://cplusplus.com/forum/beginner/4639/
@@ -316,12 +330,13 @@ void testFunksjoner(int metodeNr){
     byggCase11Tre,
     byggCase12Tre,
     byggCase13Tre,
-    byggCase14Tre
+    byggCase14Tre,
+    byggCase15Tre
   };
 
   const int antallCase = sizeof(byggeFunksjoner)
                           /sizeof(AlleByggeFunksjoner);
-  int sukksessArray[antallCase] = { 1,0,1,1,1, 1,0,0, 0,0,0 ,0,0,1}; 
+  int sukksessArray[antallCase] = { 1,0,1,1,1, 1,0,0, 0,0,0 ,0,0,1,0}; 
   int antallSukkses = 0; 
   if(metodeNr > 0 && metodeNr < 3 ){
     cout << "Tester metode " << metodeNr << " \n\n";
