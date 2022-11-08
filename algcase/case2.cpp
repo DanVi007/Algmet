@@ -236,6 +236,26 @@ void printPerfectNumbers7(const int amountOfNumbers) {
   }
 }
 
+void printPerfectNumbersTest7(const int amountOfNumbers) {
+  int currentAmountFound = 0;
+  int foundNumber = 33550000;
+  while(currentAmountFound < amountOfNumbers) {
+    int sumOfNumbers = 0;
+    for(int i = foundNumber/2 ; i > 0; i--){
+      if(foundNumber % i == 0 ){
+        sumOfNumbers+= i;
+        if(sumOfNumbers > foundNumber){
+          i = 0;
+        }       
+      } 
+    }
+    if(sumOfNumbers == foundNumber){
+      currentAmountFound++;
+      cout << currentAmountFound <<" perfect number is "<< foundNumber << endl; 
+    }
+    foundNumber++;
+  }
+}
 // broken logic 
 void printPerfectNumbers8(const int amountOfNumbers) {
   int currentAmountFound = 0;
@@ -297,6 +317,7 @@ int main(){
   //printPerfectNumbersTest();
   // printPerfectNumbers6(5);
 //printPerfectNumbers7(5);
-printPerfectNumbers8(5);
+printPerfectNumbersTest7(1);
+//printPerfectNumbers8(5);
   return 0;
 }
