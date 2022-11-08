@@ -238,7 +238,7 @@ void printPerfectNumbers7(const int amountOfNumbers) {
 
 void printPerfectNumbersTest7(const int amountOfNumbers) {
   int currentAmountFound = 0;
-  int foundNumber = 33550000;
+  int foundNumber = 33549800;
   while(currentAmountFound < amountOfNumbers) {
     int sumOfNumbers = 0;
     for(int i = foundNumber/2 ; i > 0; i--){
