@@ -51,7 +51,12 @@ int snuOppNed(const int n){
 }
 
 int main(){
-  snuOppNed(5);
+  for(int i =1; i < 100001;i++){
+    int snudd = snuOppNed(i);
+    if(snudd != 0 && snudd == i) {
+      cout << i << " blir " << snudd << endl;
+    }
+  }
 
   return 0;
 }
