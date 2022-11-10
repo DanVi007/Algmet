@@ -5,7 +5,7 @@ using namespace std;
 const int N = 3; // M > N, M og N må være positive heltall 
 const int M = 5; // M > N, M og N må være positive heltall 
 
-int gOnsker[N][3];
+int gOnsker[N][3]; 
 int gBesteFordeling[M]; //indeks er gjenstand -1. og verdi er nummer på person
 
 
@@ -25,8 +25,15 @@ int besteTotalPrioritet;
 
 int totalPrioritetNaa;
 
-
+/*
+ * 1. setter person til gGjenstand rekursivt. (permutering)
+ *
+ * 2. Dersom alle er satt blir det sjekket hva resultatet sammenlignet med 
+ *    resultatet ble. Oppdaterer ettersom en bedre verdi er funnet.  
+ *
+ */
 void finnBesteFordeling(int person){
+  // en permutering er nådd så gGjenstand blir sjekket 
   if(person == 4){ // dersom det har nådd en ferdig permutering
     totalPrioritetNaa = 0; // resetter nåværende prioritet 
     for(int i = 0; i < M;i++) { // går gjennom gGjenstand
@@ -42,7 +49,7 @@ void finnBesteFordeling(int person){
       }
     }
 
-    if(totalPrioritetNaa < besteTotalPrioritet){
+    if(totalPrioritetNaa < besteTotalPrioritet){ // opdaterer 
       besteTotalPrioritet = totalPrioritetNaa;
       for(int i = 0; i < M; i++) {
         gBesteFordeling = gGjenstand[i];
@@ -52,7 +59,7 @@ void finnBesteFordeling(int person){
     for(int i = 0; i < M; i++){
       if(gGjenstand[i] == 0){
         gGjenstand[i] = person;
-        finnBesteFordeling(person++);
+        finnBesteFordeling(person+1);
       }
       gGjenstand[i] = 0;
     }
@@ -68,7 +75,9 @@ void nullStillVariabler(){
   gBesteFordeling = {};
 }
 
-
+void initOnsker(){
+  gOnsker = {{}}
+}
 int main() {
 
 
