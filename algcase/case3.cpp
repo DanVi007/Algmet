@@ -34,6 +34,7 @@ bool prefix(char array[],const int sizeOfArray){
 
     if (checkPrefix(tempString) && i != sizeOfArray-1){
       cout << tempString << endl;
+      // check size cba to do now  
       for(int j = i +1 ; j < sizeOfArray;j++){
         cout << array[j];
       }
