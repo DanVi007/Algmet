@@ -238,7 +238,8 @@ void printPerfectNumbers7(const int amountOfNumbers) {
 
 void printPerfectNumbersTest7(const int amountOfNumbers) {
   int currentAmountFound = 0;
-  int foundNumber = 33549800;
+  //int foundNumber = 33549800;
+  int foundNumber = 1; 
   while(currentAmountFound < amountOfNumbers) {
     int sumOfNumbers = 0;
     for(int i = foundNumber/2 ; i > 0; i--){
@@ -247,6 +248,25 @@ void printPerfectNumbersTest7(const int amountOfNumbers) {
         if(sumOfNumbers > foundNumber){
           i = 0;
         }       
+      } 
+    }
+    if(sumOfNumbers == foundNumber){
+      currentAmountFound++;
+      cout << currentAmountFound <<" perfect number is "<< foundNumber << endl; 
+    }
+    foundNumber++;
+  }
+}
+// same as 7 but removed if check for each look 
+void printPerfectNumbers9(const int amountOfNumbers) {
+  int currentAmountFound = 0;
+  //int foundNumber = 33549800;
+  int foundNumber = 1; 
+  while(currentAmountFound < amountOfNumbers) {
+    int sumOfNumbers = 0;
+    for(int i = foundNumber/2 ; i > 0; i--){
+      if(foundNumber % i == 0 ){
+        sumOfNumbers+= i;
       } 
     }
     if(sumOfNumbers == foundNumber){
@@ -317,7 +337,8 @@ int main(){
   //printPerfectNumbersTest();
   // printPerfectNumbers6(5);
 //printPerfectNumbers7(5);
-printPerfectNumbersTest7(1);
+//printPerfectNumbersTest7(5);
+printPerfectNumbers9(5);
 //printPerfectNumbers8(5);
   return 0;
 }
