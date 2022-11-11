@@ -41,7 +41,7 @@ void finnBesteFordeling1(int person){
       if(person != 0){ // sjekker om en person var funnet 
         int onskeVerdi = 4; 
         for(int j= 0; j < 3;j++) {// finner ønske verdi til personen 
-          if(gOnsker[person][j] == i+1 ){
+          if(gOnsker[person-1][j] == i+1 ){
             onskeVerdi = j+1;
           }
         }
@@ -121,7 +121,7 @@ void printBestePrio(){
 int main() {
 
   nullStillVariabler();
-  finnBesteFordeling2(1);
+  finnBesteFordeling1(1);
   printBestePrio();
  cout << besteTotalPrioritet  << endl;
 
