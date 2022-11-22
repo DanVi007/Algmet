@@ -8,7 +8,6 @@ int numbers[100];
 
 
 bool checkNumber(int number) {
-  
   if(number == 7 || number % 7 == 0) {
     return false;
   }
@@ -20,8 +19,8 @@ bool checkNumber(int number) {
     }
   }
   return true;
-
 }
+
 void replaceNumbers(){
   int replaceNumber = 0;
   int altReplaceNumber = 0;
@@ -31,7 +30,6 @@ void replaceNumbers(){
       if(!checkNumber(replaceNumber)){
         altReplaceNumber++;
         numbers[i] = altReplaceNumber;
-        
       } else {
         numbers[i] = replaceNumber;
       }
