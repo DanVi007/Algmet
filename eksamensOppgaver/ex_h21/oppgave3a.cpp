@@ -12,20 +12,22 @@ Node* gRoot = nullptr; // Rot-peker (har altså ikke at head->right er rota).
 const int MAX = 999; // Max.nodehøyde (høyere enn reelt. Brukes kun i 3a).
 
 int minimumHoyde(const Node * t ){
-  if(node){
+  if(t){
     int nivaa = 1;
-    if(!node->left && !node->right){
+    if(!t->left && !t->right){
       return 1;
     } else {
-      nivaaVenstre = minimumHoyde(node->left);
-      nivaaHoyre = minimumHode(node->right);
+      int nivaaVenstre = minimumHoyde(t->left);
+      int nivaaHoyre = minimumHoyde(t->right);
       nivaa += (nivaaVenstre < nivaaHoyre) ? nivaaVenstre : nivaaHoyre;
     }
 
     return nivaa;
 
   }else{
-    return 0;
+    if(t == gRoot){
+      return 0;
+    } 
+    return MAX;
   }
-
 }
