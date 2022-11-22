@@ -19,6 +19,7 @@ int minimumHoyde(const Node * t ){
     } else {
       int nivaaVenstre = minimumHoyde(t->left);
       int nivaaHoyre = minimumHoyde(t->right);
+      // setter den minste av subtreene
       nivaa += (nivaaVenstre < nivaaHoyre) ? nivaaVenstre : nivaaHoyre;
     }
 
