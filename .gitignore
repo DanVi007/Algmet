@@ -3,4 +3,5 @@ run_folder
 *.exe
 a.out 
 */a.out
+*/*.exe
 
