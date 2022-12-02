@@ -13,16 +13,15 @@ void flettToSorterteArrayer(int a[], const int b[],
 
   // sorterer arrayen a igjen med selection sort
   for(int i = 0; i < aLen;i++){
-    int minimumFunnet = a[i];
     int minimumIndeks = i;
     for(int j = i +1; j < aLen; j++){
-      if(a[j] < minimumFunnet){
-        minimumFunnet = a[j];
+      if(a[j] < a[minimumIndeks]){
         minimumIndeks = j;
       }
     }
+    int tmp = a[minimumIndeks];
     a[minimumIndeks] = a[i];
-    a[i] = minimumFunnet;
+    a[i] = tmp;
   }
 
 }
@@ -96,6 +95,16 @@ void flettToSorterteArrayer4(int a[], const int b[],
     }
     aIndeks++;
   }
+
+  int endAindeks = aLen -1;
+
+  for(int i = bLen -1; i >= 0; i--){
+    if(a[endAindeks] < b[i]){
+      a[endAindeks] = b[i];
+      endAindeks--;
+    }
+  }
+
 }
 
 int main(){
