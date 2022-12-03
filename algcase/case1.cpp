@@ -30,10 +30,6 @@ void printBrett(){
 void finnLosning(const int n){
   int y = n/9;
   int x = n %9;
-  if(n == 15){
-    cout << "hello" << endl;
-    printBrett();
-  }
   if(n == 82) {
     printBrett();
   } else if(brett[x][y] == 0) {
@@ -67,8 +63,16 @@ void finnLosning(const int n){
       case 1: ySomSjekkes[0] = 0; ySomSjekkes[1] = 2; break;
       case 2: ySomSjekkes[0] = 0; ySomSjekkes[1] = 1; break;
     }
-
+    // int ekteXposisjon = x-xPosisjonIboks + xSomSjekkes[0];
+    // int ekteYposisjon =  y-yPosisjonIboks + ySomSjekkes[0];
+    // ekteXposisjon = x-xPosisjonIboks + xSomSjekkes[1];
+    // ekteYposisjon =  y-yPosisjonIboks + ySomSjekkes[1]; 
+    // settFunnetTall(ekteXposisjon,ekteYposisjon,gyldigeTall);
+    // settFunnetTall(ekteXposisjon,ekteYposisjon,gyldigeTall);
+    //
     settFunnetTall(x-xPosisjonIboks + xSomSjekkes[0], y-yPosisjonIboks + ySomSjekkes[0],gyldigeTall);
+    settFunnetTall(x-xPosisjonIboks + xSomSjekkes[0], y-yPosisjonIboks + ySomSjekkes[1],gyldigeTall);
+    settFunnetTall(x-xPosisjonIboks + xSomSjekkes[1], y-yPosisjonIboks + ySomSjekkes[0],gyldigeTall);
     settFunnetTall(x-xPosisjonIboks + xSomSjekkes[1], y-yPosisjonIboks + ySomSjekkes[1],gyldigeTall);
 
     for(int i = 1; i < 10; i++){
